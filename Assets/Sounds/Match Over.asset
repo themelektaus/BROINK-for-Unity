@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c1af21a630d7547be19a7e8251884e, type: 3}
+  m_Name: Match Over
+  m_EditorClassIdentifier: 
+  group: {fileID: -6791210059966659908, guid: 5a98351c4f92e6d44ac549c54fe86226, type: 2}
+  volume: {x: 0.6, y: 0.6}
+  pitch: {x: 1, y: 1}
+  clips:
+  - {fileID: 8300000, guid: 2e94ee2db3937d447aad4a04f80e1bd4, type: 3}

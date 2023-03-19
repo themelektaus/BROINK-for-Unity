@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c1af21a630d7547be19a7e8251884e, type: 3}
+  m_Name: Ball Bounce
+  m_EditorClassIdentifier: 
+  group: {fileID: 1359015753269135571, guid: 5a98351c4f92e6d44ac549c54fe86226, type: 2}
+  volume: {x: 0.4, y: 0.4}
+  pitch: {x: 1, y: 1}
+  clips:
+  - {fileID: 8300000, guid: 2a9b0bb424164844693d2ad7b9a4032d, type: 3}
+  - {fileID: 8300000, guid: e4844ace77f0e9f418b85cdf31233bb7, type: 3}
+  - {fileID: 8300000, guid: dd830176c084c0a40a77e90c9a8a1c0b, type: 3}
