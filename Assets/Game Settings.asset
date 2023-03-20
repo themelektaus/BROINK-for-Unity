@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Game Settings
   m_EditorClassIdentifier: 
   wins: 0
-  level: 6
+  level: 1
   mastered: 0
   ballRadius: 0.4
   ballAcceleration: 0.2
