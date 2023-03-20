@@ -8,8 +8,13 @@ namespace BROINK
     {
         public override bool isHuman => false;
 
-        public virtual float speedOffset => 10;
-        public virtual float outwardsFactor => 0;
+        [System.Serializable]
+        public class Config
+        {
+            [Range(0, 10)] public float speedOffset = 10;
+            [Range(0, 100)] public float outwardsFactor;
+        }
+        public virtual Config config => new();
 
         public virtual void Process(ref Vector2 output)
         {
@@ -27,7 +32,7 @@ namespace BROINK
         static float player_acceleration => GameSettings.active.ballAcceleration;
 
         float opening_y;
-        bool? opening_dodge;
+        float? opening_dodge;
 
         protected override void Awake()
         {
@@ -76,13 +81,14 @@ namespace BROINK
 
         protected void ModeOpeningDodge(ref Vector2 output)
         {
-            opening_dodge ??= playerOther_speed.magnitude > AISettings.active.openingDodgeThreshold;
-            if (opening_dodge.Value)
+            opening_dodge ??= playerOther_speed.magnitude > AISettings.active.openingDodgeThreshold ? 1 : -1;
+            if (opening_dodge.Value > 0)
+                opening_dodge = Mathf.Max(0, opening_dodge.Value - Time.fixedDeltaTime);
+            if (opening_dodge.Value == 0)
             {
-                ModeDefensive(ref output);
+                ModeDefensive(ref output, opening: true);
                 return;
             }
-
             ModeOffensive(ref output);
         }
 
@@ -108,10 +114,10 @@ namespace BROINK
 
             target_direction = point_direction(playerSelf_pos, target);
             var enemyspeed = point_distance(playerOther_speed, new());
-            output = GetOutputByDirection(target_direction, enemyspeed + speedOffset);
+            output = GetOutputByDirection(target_direction, enemyspeed + config.speedOffset);
         }
 
-        protected void ModeDefensive(ref Vector2 output, bool advanced = false)
+        protected void ModeDefensive(ref Vector2 output, bool opening = false, bool advanced = false)
         {
             var enemy_speed = point_distance(playerOther_speed, new());
             if (advanced)
@@ -122,7 +128,7 @@ namespace BROINK
                 if (otherDirectionAligned < 0)
                 {
                     var direction_to_enemy = point_direction(playerSelf_pos, playerOther_pos);
-                    output = GetOutputByDirection(direction_to_enemy, enemy_speed + speedOffset);
+                    output = GetOutputByDirection(direction_to_enemy, enemy_speed + config.speedOffset);
                     return;
                 }
             }
@@ -139,9 +145,10 @@ namespace BROINK
             if (angle_diff == 0 || angle_diff == 180 || angle_diff == -180)
                 angle_diff = choose(1, -1);
             var outwards_percentage = point_distance(new(), playerSelf_pos) / gameRadius;
-            mytargetdir = my_direction_from_center + (90 + own_speed * 4 + outwards_percentage * outwardsFactor) * sign(angle_diff);
+            var hardness = opening ? AISettings.active.openingDefenseHardness : AISettings.active.defenseHardness;
+            mytargetdir = my_direction_from_center + (90 + own_speed * hardness + outwards_percentage * config.outwardsFactor) * sign(angle_diff);
 
-            output = GetOutputByDirection(mytargetdir, enemy_speed + speedOffset);
+            output = GetOutputByDirection(mytargetdir, enemy_speed + config.speedOffset);
         }
 
         protected void OutOfBoundsEmergencyBreak(ref Vector2 output, bool advanced = false)

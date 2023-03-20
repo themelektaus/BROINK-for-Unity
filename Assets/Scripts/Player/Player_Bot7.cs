@@ -4,8 +4,7 @@ namespace BROINK
 {
     public class Player_Bot7 : Player_Bot
     {
-        public override float speedOffset => AISettings.active.bot7SpeedOffset;
-        public override float outwardsFactor => AISettings.active.bot7OutwardsFactor;
+        public override Config config => AISettings.active.bot7Config;
 
         public override void Process(ref Vector2 output)
         {

@@ -16,22 +16,30 @@ MonoBehaviour:
   openingBackstepDuration: 0.4
   openingY: {x: -1, y: 1}
   openingDodgeThreshold: 5
+  openingDefenseHardness: 2
+  defenseHardness: 4
   breakAccelerationFactor: 1.15
   bot1SpeedDamping: 0.2
-  bot2SpeedOffset: 10
-  bot2OutwardsFactor: 0
-  bot3SpeedOffset: 10
-  bot3OutwardsFactor: 0
+  bot2Config:
+    speedOffset: 10
+    outwardsFactor: 0
+  bot3Config:
+    speedOffset: 10
+    outwardsFactor: 0
   bot3ModeSwitchGameRadiusThreshold: 300
-  bot4SpeedOffset: 6
-  bot4OutwardsFactor: 50
+  bot4Config:
+    speedOffset: 6
+    outwardsFactor: 50
   bot4MinPositionScore: 75
-  bot5SpeedOffset: 10
-  bot5OutwardsFactor: 30
+  bot5Config:
+    speedOffset: 10
+    outwardsFactor: 30
   bot5MinPositionScore: 0
-  bot6SpeedOffset: 10
-  bot6OutwardsFactor: 0
+  bot6Config:
+    speedOffset: 10
+    outwardsFactor: 0
   bot6ModeSwitchGameRadiusThreshold: 200
-  bot7SpeedOffset: 1
-  bot7OutwardsFactor: 30
+  bot7Config:
+    speedOffset: 1
+    outwardsFactor: 30
   bot7MinPositionScore: -10
