@@ -163,11 +163,12 @@ namespace BROINK
             {
                 fakexpos += fakexspeed;
                 fakeypos += fakeyspeed;
-                var acceleration = player_acceleration / 1.125f;
+                // TODO: Make it better
+                var acceleration = player_acceleration / 1.15f;
                 fakespeed -= acceleration;
                 fakexspeed -= lengthdir_x(acceleration, breakdirection);
                 fakeyspeed -= lengthdir_y(acceleration, breakdirection);
-                if (point_distance(0, 0, fakexpos, fakeypos) >= fakeradius - 50)
+                if (point_distance(0, 0, fakexpos, fakeypos) >= fakeradius - 40)
                 {
                     output = -lengthdir(10, breakdirection);
                     return;
