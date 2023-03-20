@@ -16,4 +16,8 @@ MonoBehaviour:
   level: 1
   mastered: 0
   ballRadius: 0.4
-  ballAcceleration: 0.02
+  ballAcceleration: 0.2
+  playingFieldSize: 10
+  playingFieldLifetime: 28
+  barrierWidth: 0.1
+  barrierLifetime: 2

@@ -18,10 +18,9 @@ namespace BROINK
         public class UI
         {
             public GameObject logo;
-            public GameObject modeMenu;
-            public GameObject colorMenu;
             public GameObject blackWins;
             public GameObject whiteWins;
+            public GameObject backButton;
         }
         [SerializeField] UI ui;
 
@@ -30,7 +29,6 @@ namespace BROINK
         {
             public SoundEffect reset;
             public SoundEffect ballHit;
-            public SoundEffect ballBounce;
             public SoundEffect matchOver;
             public SoundEffect blackWin;
             public SoundEffect whiteWin;
@@ -45,8 +43,6 @@ namespace BROINK
         public enum State { Menu, Ready, Playing, GameOver }
         State state;
 
-        (float current, float target, float velocity, float smoothTime) timeScale;
-
         void Awake()
         {
             GameSettings.active = gameSettings;
@@ -59,6 +55,74 @@ namespace BROINK
             ResetGame();
         }
 
+        void FixedUpdate()
+        {
+            if (state == State.Playing || state == State.GameOver)
+                PhysicsSystem.PhysicsUpdate(playingField.barrier);
+        }
+
+        void Update()
+        {
+            bool AnyPlayerInput()
+            {
+                if (player)
+                    return player.ball.input.sqrMagnitude != 0;
+
+                if (blackBall.input.sqrMagnitude != 0)
+                    return true;
+
+                if (whiteBall.input.sqrMagnitude != 0)
+                    return true;
+
+                return false;
+            }
+
+            PhysicsSystem.NormalUpdate();
+
+            if (state == State.Ready)
+            {
+                if (AnyPlayerInput())
+                {
+                    playingField.enabled = true;
+                    state = State.Playing;
+                }
+                return;
+            }
+
+            if (state == State.Menu)
+                return;
+
+            var blackBallLost = blackBall.IsOutside(playingField.radius);
+            var whiteBallLost = whiteBall.IsOutside(playingField.radius);
+
+            if (!blackBallLost && !whiteBallLost)
+                return;
+
+            if (blackBallLost)
+                blackBall.Drop(state != State.GameOver);
+
+            if (whiteBallLost)
+                whiteBall.Drop(state != State.GameOver);
+
+            if (state == State.GameOver)
+                return;
+
+            if (player)
+            {
+                if (!blackBallLost && player.ball == blackBall)
+                    GameSettings.active.Win();
+                else if (!whiteBallLost && player.ball == whiteBall)
+                    GameSettings.active.Win();
+                else
+                    GameSettings.active.Lose();
+            }
+
+            GameOver(
+                blackWins: !blackBallLost,
+                whiteWins: !whiteBallLost
+            );
+        }
+
         public void SwitchToMenuState()
         {
             state = State.Menu;
@@ -68,7 +132,7 @@ namespace BROINK
 
         public void ResetGame()
         {
-            timeScale = (1, 1, 0, .1f);
+            PhysicsSystem.ResetTimeScale();
 
             soundEffects.reset.Play();
 
@@ -87,6 +151,7 @@ namespace BROINK
 
             ui.blackWins.SetActive(false);
             ui.whiteWins.SetActive(false);
+            ui.backButton.SetActive(true);
         }
 
         public void StartGame()
@@ -141,127 +206,11 @@ namespace BROINK
                 Destroy(bot);
         }
 
-        void Update()
-        {
-            timeScale.current = Mathf.SmoothDamp(
-                timeScale.current,
-                timeScale.target,
-                ref timeScale.velocity,
-                timeScale.smoothTime
-            );
-
-            blackBall.CustomUpdate(timeScale.current);
-            whiteBall.CustomUpdate(timeScale.current);
-
-            if (state == State.Ready)
-            {
-                if (Input.anyKeyDown)
-                {
-                    playingField.enabled = true;
-                    state = State.Playing;
-                }
-            }
-        }
-
-        void FixedUpdate()
-        {
-            if (state == State.Menu || state == State.Ready)
-                return;
-
-            blackBall.UpdatePhysics(timeScale.current);
-            whiteBall.UpdatePhysics(timeScale.current);
-
-            if (playingField.barrier.enabled)
-                UpdateBarrierCollision();
-
-            if (blackBall.CollidesWith(whiteBall))
-                UpdateBallCollision();
-
-            blackBall.UpdateTransformPosition();
-            whiteBall.UpdateTransformPosition();
-
-            var blackBallLost = blackBall.IsOutside(playingField.radius);
-            var whiteBallLost = whiteBall.IsOutside(playingField.radius);
-
-            if (!blackBallLost && !whiteBallLost)
-                return;
-
-            if (blackBallLost)
-                blackBall.Drop(state != State.GameOver);
-
-            if (whiteBallLost)
-                whiteBall.Drop(state != State.GameOver);
-
-            if (state == State.GameOver)
-                return;
-
-            if (player)
-            {
-                if (!blackBallLost && player.ball == blackBall)
-                    GameSettings.active.Win();
-                else if (!whiteBallLost && player.ball == whiteBall)
-                    GameSettings.active.Win();
-                else
-                    GameSettings.active.Lose();
-            }
-
-            GameOver(
-                blackWins: !blackBallLost,
-                whiteWins: !whiteBallLost
-            );
-        }
-
-        void UpdateBarrierCollision()
-        {
-            void Bounce(Ball ball, float positionX)
-            {
-                soundEffects.ballBounce.Play();
-
-                playingField.barrier.Fizzle();
-
-                var position = ball.position;
-                position.x = positionX;
-                ball.position = position;
-
-                var velocity = ball.velocity;
-                velocity.x = -velocity.x;
-                ball.velocity = velocity;
-            }
-
-            var w = playingField.barrier.width / 2;
-
-            if (blackBall.position.x > -GameSettings.active.ballRadius - w)
-                Bounce(blackBall, -GameSettings.active.ballRadius - w);
-
-            if (whiteBall.position.x < GameSettings.active.ballRadius + w)
-                Bounce(whiteBall, GameSettings.active.ballRadius + w);
-        }
-
-        void UpdateBallCollision()
-        {
-            while (blackBall.CollidesWith(whiteBall))
-            {
-                blackBall.position -= blackBall.velocity * Time.fixedDeltaTime;
-                whiteBall.position -= whiteBall.velocity * Time.fixedDeltaTime;
-            }
-
-            var impactDirection = (whiteBall.position - blackBall.position).normalized;
-
-            var energyTransfer = Vector2.Dot(blackBall.velocity.normalized, impactDirection);
-            var force = blackBall.velocity.magnitude * energyTransfer * impactDirection;
-
-            energyTransfer = Vector2.Dot(whiteBall.velocity.normalized, -impactDirection);
-            force += whiteBall.velocity.magnitude * (energyTransfer + .1f) * impactDirection;
-
-            blackBall.velocity -= force;
-            whiteBall.velocity += force;
-
-            soundEffects.ballHit.Play(force.magnitude * 5, blackBall.position + impactDirection * GameSettings.active.ballRadius);
-        }
-
         void GameOver(bool blackWins, bool whiteWins)
         {
             state = State.GameOver;
+
+            ui.backButton.SetActive(false);
 
             soundEffects.matchOver.Play();
 
@@ -272,11 +221,9 @@ namespace BROINK
 
             IEnumerator _()
             {
-                timeScale.target = .1f;
+                PhysicsSystem.StartSlowMotion();
                 yield return new WaitForSeconds(.5f);
-
-                timeScale.smoothTime = 1;
-                timeScale.target = 1;
+                PhysicsSystem.ExitSlowMotion();
 
                 if (blackWins)
                 {

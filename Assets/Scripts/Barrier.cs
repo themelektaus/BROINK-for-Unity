@@ -7,9 +7,7 @@ namespace BROINK
     [RequireComponent(typeof(SpriteRenderer))]
     public class Barrier : MonoBehaviour
     {
-        public float width => GameSettings.active.barrierWidth;
-        public float maxLifetime => GameSettings.active.barrierLifetime;
-
+        [SerializeField] SoundEffect ballBounceSoundEffect;
         [SerializeField] SoundEffect fadeOutSoundEffect;
 
         public float currentLifetime { get; private set; }
@@ -26,7 +24,7 @@ namespace BROINK
 
         void OnEnable()
         {
-            currentLifetime = maxLifetime;
+            currentLifetime = GameSettings.active.barrierLifetime;
             ResetTransform();
         }
 
@@ -57,13 +55,14 @@ namespace BROINK
             StartCoroutine(ref fadeOutCoroutine, FadeOutRoutine());
         }
 
-        public void Fizzle()
+        public void BallBounce()
         {
             StopCoroutine(ref fizzleCoroutine);
 
             if (currentLifetime == 0)
                 return;
 
+            ballBounceSoundEffect.Play();
             StartCoroutine(ref fizzleCoroutine, FizzleRoutine());
         }
 

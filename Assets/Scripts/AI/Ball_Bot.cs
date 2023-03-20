@@ -25,7 +25,7 @@ namespace BROINK
 
         protected float gameRadius => playingField.radius * 100;
 
-        float player_acceleration => GameSettings.active.ballAcceleration;
+        static float player_acceleration => GameSettings.active.ballAcceleration;
 
         protected virtual void Awake()
         {
@@ -58,7 +58,7 @@ namespace BROINK
         protected bool ModeOpening(ref Vector2 output)
         {
             var current = playingField.barrier.currentLifetime;
-            var max = playingField.barrier.maxLifetime;
+            var max = GameSettings.active.barrierLifetime;
             if (current > max - AISettings.active.openingTotalDuration)
             {
                 if (current > max - AISettings.active.openingBackstepDuration)

@@ -353,37 +353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438c7db7f9e13b84daabc2413b6d8d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &252419971
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 252419972}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &252419972
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 252419971}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1573091520}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &329277761
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,6 +659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5a84c3a3c97f214a92640043746dd42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballBounceSoundEffect: {fileID: 11400000, guid: 82d6d45e1bc729f42bcb5dbb8dabb8b5, type: 2}
   fadeOutSoundEffect: {fileID: 11400000, guid: 67ab81e87a311314bb4f0681b8737edc, type: 2}
 --- !u!1 &406919511
 GameObject:
@@ -2023,14 +1993,12 @@ MonoBehaviour:
   playingField: {fileID: 898750215}
   ui:
     logo: {fileID: 406919511}
-    modeMenu: {fileID: 0}
-    colorMenu: {fileID: 0}
     blackWins: {fileID: 1944433861}
     whiteWins: {fileID: 1287559282}
+    backButton: {fileID: 1479160537}
   soundEffects:
     reset: {fileID: 11400000, guid: 79d0e656887968d4097d5f144482ce7c, type: 2}
     ballHit: {fileID: 11400000, guid: 8b422d7fef4103348a9544e425512992, type: 2}
-    ballBounce: {fileID: 11400000, guid: 82d6d45e1bc729f42bcb5dbb8dabb8b5, type: 2}
     matchOver: {fileID: 11400000, guid: 863cd53c67a4f0b42baebdaf208a6f82, type: 2}
     blackWin: {fileID: 11400000, guid: cf9b9fbeaa89fef4aa446c002c79ae40, type: 2}
     whiteWin: {fileID: 11400000, guid: b06f34ac2796fe24e83d0b839f46f27d, type: 2}
@@ -3062,7 +3030,6 @@ Transform:
   - {fileID: 1705911319}
   - {fileID: 1239781258}
   - {fileID: 1479160538}
-  - {fileID: 252419972}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3974,6 +3941,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {x: 0, y: 0}
   sprite: {fileID: 525885722479868350}
+  hitSoundEffect: {fileID: 11400000, guid: 8b422d7fef4103348a9544e425512992, type: 2}
   dropSoundEffect: {fileID: 11400000, guid: 2cc031b173d7bb844a1d26a130b40d3a, type: 2}
   originPosition: {x: 0, y: 0}
 --- !u!4 &5575350993290476308
@@ -4020,6 +3988,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {x: 0, y: 0}
   sprite: {fileID: 1906015571613360191}
+  hitSoundEffect: {fileID: 11400000, guid: 8b422d7fef4103348a9544e425512992, type: 2}
   dropSoundEffect: {fileID: 11400000, guid: 2cc031b173d7bb844a1d26a130b40d3a, type: 2}
   originPosition: {x: 0, y: 0}
 --- !u!1 &6822824952136867006

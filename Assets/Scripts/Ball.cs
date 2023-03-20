@@ -10,6 +10,7 @@ namespace BROINK
         public Vector2 input;
 
         [SerializeField] SpriteRenderer sprite;
+        [SerializeField] SoundEffect hitSoundEffect;
         [SerializeField] SoundEffect dropSoundEffect;
 
         AudioSource rollAudioSource;
@@ -25,11 +26,26 @@ namespace BROINK
 
         void Awake()
         {
+            PhysicsSystem.balls.Add(this);
+
             rollAudioSource = GetComponent<AudioSource>();
             originPosition = transform.localPosition;
         }
 
-        public void CustomUpdate(float timeScale)
+        void OnDestroy()
+        {
+            PhysicsSystem.balls.Remove(this);
+        }
+
+        public void ResetBall()
+        {
+            dropDirection = null;
+            dropDelay = .1f;
+            position = originPosition;
+            velocity = Vector2.zero;
+        }
+
+        public void NormalUpdate(float timeScale)
         {
             if (!dropDirection.HasValue)
             {
@@ -53,20 +69,7 @@ namespace BROINK
             transform.localScale = scale;
         }
 
-        public void ResetBall()
-        {
-            dropDirection = null;
-            dropDelay = .1f;
-            position = originPosition;
-            velocity = Vector2.zero;
-        }
-
-        public void UpdateTransformPosition()
-        {
-            transform.localPosition = position;
-        }
-
-        public void UpdatePhysics(float timeScale)
+        public void PhysicsUpdate(float timeScale)
         {
             var deltaTime = Time.fixedDeltaTime * timeScale;
 
@@ -78,6 +81,66 @@ namespace BROINK
 
             velocity += acceleration * deltaTime * input.normalized;
             position += velocity * timeScale;
+        }
+
+        public void UpdateTransformPosition()
+        {
+            transform.localPosition = position;
+        }
+
+        public void UpdateCollision(Barrier barrier)
+        {
+            if (!CollidesWithBarrier(out var x))
+                return;
+
+            var position = this.position;
+            position.x = x;
+            this.position = position;
+
+            var velocity = this.velocity;
+            velocity.x = -velocity.x;
+            this.velocity = velocity;
+
+            barrier.BallBounce();
+        }
+
+        bool CollidesWithBarrier(out float x)
+        {
+            var ballRadius = GameSettings.active.ballRadius;
+            var barrierWidth = GameSettings.active.barrierWidth;
+
+            x = -ballRadius - barrierWidth;
+            if (originPosition.x < 0 && position.x > x)
+                return true;
+
+            x = ballRadius + barrierWidth;
+            if (originPosition.x > 0 && position.x < x)
+                return true;
+
+            x = 0;
+            return false;
+        }
+
+        public void UpdateCollision(Ball other)
+        {
+            while (CollidesWith(other))
+            {
+                position -= velocity * Time.fixedDeltaTime;
+                other.position -= other.velocity * Time.fixedDeltaTime;
+            }
+
+            var impactDirection = (other.position - position).normalized;
+
+            var energyTransfer = Vector2.Dot(velocity.normalized, impactDirection);
+            var force = velocity.magnitude * energyTransfer * impactDirection;
+
+            energyTransfer = Vector2.Dot(other.velocity.normalized, -impactDirection);
+            force += other.velocity.magnitude * (energyTransfer + .1f) * impactDirection;
+
+            velocity -= force;
+            other.velocity += force;
+
+            hitSoundEffect.Play(force.magnitude * 5, position + impactDirection * GameSettings.active.ballRadius);
         }
 
         public bool CollidesWith(Ball other)
