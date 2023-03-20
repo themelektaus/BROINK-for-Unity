@@ -6,6 +6,7 @@ namespace BROINK
     {
         public override void Process(ref Vector2 output)
         {
+            mode = Mode.Offensive;
             output = -playerSelf_pos / 10;
             output += -playerSelf_speed * AISettings.active.bot1SpeedDamping;
         }

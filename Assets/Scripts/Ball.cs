@@ -8,8 +8,9 @@ namespace BROINK
         static float radius => GameSettings.active.ballRadius;
 
         public Vector2 input;
-
-        [SerializeField] SpriteRenderer sprite;
+        public BallIcons icons;
+        
+        [SerializeField] SpriteRenderer iconRenderer;
         [SerializeField] SoundEffect hitSoundEffect;
         [SerializeField] SoundEffect dropSoundEffect;
 
@@ -20,6 +21,7 @@ namespace BROINK
 
         public Vector2 position { get; set; }
         public Vector2 velocity { get; set; }
+        public Sprite icon { get; set; }
 
         public Vector2 GetPosition() => new(position.x * 100, position.y * -100);
         public Vector2 GetSpeed() => new Vector2(velocity.x, -velocity.y) / (Time.fixedDeltaTime / 1.2f);
@@ -72,6 +74,8 @@ namespace BROINK
 
         public void NormalUpdate(float timeScale)
         {
+            iconRenderer.sprite = icon;
+
             if (!dropDirection.HasValue)
             {
                 var _velocity = velocity.magnitude;

@@ -16,6 +16,9 @@ namespace BROINK
         }
         public virtual Config config => new();
 
+        public enum Mode { None, CampCenter, Offensive, Defensive, Emergency }
+        protected Mode mode;
+
         public virtual void Process(ref Vector2 output)
         {
 
@@ -45,9 +48,21 @@ namespace BROINK
 
         void Update()
         {
+            mode = Mode.None;
             var output = new Vector2();
-            Process(ref output);
+            if (playingField.enabled)
+                Process(ref output);
+            else if (ball.GetSpeed().magnitude > .5f)
+                output = -ball.GetSpeed();
             ball.input = new(output.x, -output.y);
+            ball.icon = mode switch
+            {
+                Mode.CampCenter => ball.icons.guard,
+                Mode.Offensive => ball.icons.attack,
+                Mode.Defensive => ball.icons.dodge,
+                Mode.Emergency => ball.icons.warning,
+                _ => null
+            };
         }
 
         protected float CalculatePositionScore()
@@ -72,6 +87,7 @@ namespace BROINK
             var max = GameSettings.active.barrierLifetime;
             if (current > max - AISettings.active.openingTotalDuration)
             {
+                mode = Mode.Offensive;
                 if (current > max - AISettings.active.openingBackstepDuration)
                     output = new(sign(playerSelf_pos.x), opening_y);
                 return true;
@@ -94,6 +110,8 @@ namespace BROINK
 
         protected void ModeCampCenter(ref Vector2 output)
         {
+            mode = Mode.CampCenter;
+
             var enemydirfromcenter = point_direction(new(), playerOther_pos);
             var target = lengthdir(50, enemydirfromcenter);
             output = (target - playerSelf_pos) / 10 - playerSelf_speed / 2;
@@ -103,6 +121,8 @@ namespace BROINK
 
         protected void ModeOffensive(ref Vector2 output)
         {
+            mode = Mode.Offensive;
+
             var distance = point_distance(playerSelf_pos, playerOther_pos);
             var target = playerOther_pos;
             var target_direction = point_direction(playerSelf_pos, target);
@@ -127,11 +147,15 @@ namespace BROINK
                 var otherDirectionAligned = (180 - (abs(angle_difference(otherDirectionToEnemy, otherDirection)) + 90)) / 90;
                 if (otherDirectionAligned < 0)
                 {
+                    mode = Mode.Defensive;
+
                     var direction_to_enemy = point_direction(playerSelf_pos, playerOther_pos);
                     output = GetOutputByDirection(direction_to_enemy, enemy_speed + config.speedOffset);
                     return;
                 }
             }
+
+            mode = Mode.Defensive;
 
             var enemy_movedir = point_direction(new(), playerOther_speed);
             var own_speed = point_distance(playerSelf_speed, new());
@@ -192,6 +216,7 @@ namespace BROINK
                 fakeyspeed -= lengthdir_y(acceleration, breakdirection);
                 if (point_distance(0, 0, fakexpos, fakeypos) >= fakeradius - 40)
                 {
+                    mode = Mode.Emergency;
                     output = -lengthdir(10, breakdirection);
                     return;
                 }

@@ -18,11 +18,9 @@ namespace BROINK
                 return;
             }
 
-
+            mode = Mode.Offensive;
             output = playerOther_pos - playerSelf_pos;
             output += -playerSelf_speed * 4;
-
-
 
             OutOfBoundsEmergencyBreak(ref output);
         }
