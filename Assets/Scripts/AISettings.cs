@@ -11,6 +11,7 @@ namespace BROINK
         [Range(0, 2)] public float openingTotalDuration = .75f;
         [Range(0, 1)] public float openingBackstepDuration = .4f;
         public Vector2 openingY = new(-1, 1);
+        [Range(0, 10)] public float openingDodgeThreshold = 5;
 
         [Header("Out of Bounce Emergency Break")]
         [Range(0, 2)] public float breakAccelerationFactor = 1.15f;

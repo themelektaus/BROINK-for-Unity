@@ -25,8 +25,9 @@ namespace BROINK
         protected float gameRadius => playingField.radius * 100;
 
         static float player_acceleration => GameSettings.active.ballAcceleration;
-        
+
         float opening_y;
+        bool? opening_dodge;
 
         protected override void Awake()
         {
@@ -71,6 +72,18 @@ namespace BROINK
                 return true;
             }
             return false;
+        }
+
+        protected void ModeOpeningDodge(ref Vector2 output)
+        {
+            opening_dodge ??= playerOther_speed.magnitude > AISettings.active.openingDodgeThreshold;
+            if (opening_dodge.Value)
+            {
+                ModeDefensive(ref output);
+                return;
+            }
+
+            ModeOffensive(ref output);
         }
 
         protected void ModeCampCenter(ref Vector2 output)

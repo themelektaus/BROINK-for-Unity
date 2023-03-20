@@ -20,7 +20,7 @@ namespace BROINK
                 if (ModeOpening(ref output))
                     return;
 
-                ModeOffensive(ref output);
+                ModeOpeningDodge(ref output);
                 OutOfBoundsEmergencyBreak(ref output);
                 return;
             }
