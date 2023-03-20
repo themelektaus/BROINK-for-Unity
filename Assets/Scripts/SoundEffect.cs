@@ -13,7 +13,7 @@ namespace BROINK
 
         public void Play(Vector2? position = null)
         {
-            Play(Utils.Choose(clips), position);
+            Play(GameMakerFunctions.choose(clips), position);
         }
 
         public void Play(float clipIndex, Vector2? position = null)

@@ -12,7 +12,7 @@ namespace BROINK
         void Update()
         {
             var rotation = transform.localEulerAngles;
-            var targetRotation = ball.input.ToAngle();
+            var targetRotation = Vector2.SignedAngle(new(1, 0), ball.input);
 
             if (ball.input == Vector2.zero)
             {

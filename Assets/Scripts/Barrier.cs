@@ -8,12 +8,13 @@ namespace BROINK
     public class Barrier : MonoBehaviour
     {
         public float width = .1f;
+        public float maxLifetime = 2;
 
-        [SerializeField] float lifetime = 2;
         [SerializeField] SoundEffect fadeOutSoundEffect;
 
+        public float currentLifetime { get; private set; }
+
         SpriteRenderer _renderer;
-        float _lifetime;
 
         Coroutine fadeOutCoroutine;
         Coroutine fizzleCoroutine;
@@ -25,7 +26,7 @@ namespace BROINK
 
         void OnEnable()
         {
-            _lifetime = lifetime;
+            currentLifetime = maxLifetime;
             ResetTransform();
         }
 
@@ -44,12 +45,12 @@ namespace BROINK
 
         void Update()
         {
-            if (_lifetime == 0)
+            if (currentLifetime == 0)
                 return;
 
-            _lifetime = Mathf.Max(0, _lifetime - Time.deltaTime);
+            currentLifetime = Mathf.Max(0, currentLifetime - Time.deltaTime);
             
-            if (_lifetime != 0)
+            if (currentLifetime != 0)
                 return;
 
             StopCoroutine(ref fizzleCoroutine);
@@ -60,7 +61,7 @@ namespace BROINK
         {
             StopCoroutine(ref fizzleCoroutine);
 
-            if (_lifetime == 0)
+            if (currentLifetime == 0)
                 return;
 
             StartCoroutine(ref fizzleCoroutine, FizzleRoutine());

@@ -4,12 +4,18 @@ namespace BROINK
 {
     public class Ball_Bot3 : Ball_Bot
     {
-        public override Vector2 GetInput()
-        {
-            if (playingField.lifetimeFactor < .4f)
-                return GetInput_ModeOffensive();
+        public override float speedOffset => 10;
+        public override float outwardsFactor => 0;
 
-            return GetInput_ModeDefensive();
+        public override void Process(ref Vector2 output)
+        {
+            if (gameRadius < 300)
+            {
+                ModeOffensive(ref output);
+                return;
+            }
+
+            ModeDefensive(ref output);
         }
     }
 }

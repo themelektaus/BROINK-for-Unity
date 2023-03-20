@@ -7,18 +7,21 @@ namespace BROINK
         public Vector2 input;
 
         public float radius = .4f;
+        public float acceleration = .02f;
 
-        [SerializeField] float acceleration = .02f;
         [SerializeField] SpriteRenderer sprite;
         [SerializeField] SoundEffect dropSoundEffect;
-
-        public Vector2 position { get; set; }
-        public Vector2 velocity { get; set; }
 
         AudioSource rollAudioSource;
         [SerializeField] Vector2 originPosition;
         Vector2? dropDirection;
         float dropDelay;
+
+        public Vector2 position { get; set; }
+        public Vector2 velocity {get; set;}
+
+        public Vector2 GetPosition() => new(position.x * 100, position.y * -100);
+        public Vector2 GetSpeed() => new Vector2(velocity.x, -velocity.y) / (Time.fixedDeltaTime / 1.2f);
 
         void Awake()
         {

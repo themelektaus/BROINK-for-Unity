@@ -20,12 +20,7 @@ namespace BROINK
 
         void Update()
         {
-            var color = _renderer.color;
-            color.g = level > Game.MAX_LEVEL ? 0 : 1;
-            color.b = level > Game.MAX_LEVEL ? 0 : 1;
-            _renderer.color = color;
-
-            _renderer.sprite = (game.mastered && level <= Game.MAX_LEVEL) || game.level > level ? full : empty;
+            _renderer.sprite = game.mastered || game.level > level ? full : empty;
         }
     }
 }

@@ -9,6 +9,8 @@ namespace BROINK
         [SerializeField] UnityEvent onClick;
 
         bool hover;
+        float scale = 1;
+
         void OnMouseEnter() => hover = true;
         void OnMouseExit() => hover = false;
 
@@ -18,7 +20,12 @@ namespace BROINK
             onClick.Invoke();
         }
 
-        float scale = 1;
+        void OnDisable()
+        {
+            scale = 1;
+            hover = false;
+        }
+
         void Update()
         {
             scale = Mathf.Lerp(scale, 1 + (hover ? 1 : 0) * .1f, Time.deltaTime * 40);

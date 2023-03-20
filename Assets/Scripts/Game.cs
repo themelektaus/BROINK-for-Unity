@@ -8,11 +8,8 @@ namespace BROINK
 {
     public class Game : MonoBehaviour
     {
-        // TODO: Game.MAX_LEVEL = 7
-        public const int MAX_LEVEL = 3;
-
         [Range(0, 3)] public int wins;
-        [Range(1, MAX_LEVEL)] public int level = 1;
+        [Range(1, 7)] public int level = 1;
         public bool mastered;
 
         [SerializeField] Ball blackBall;
@@ -41,8 +38,6 @@ namespace BROINK
             public SoundEffect whiteWin;
         }
         [SerializeField] SoundEffects soundEffects;
-
-        [SerializeField] UnityEvent onEscapeKey;
 
         public bool playVsFriend { get; set; }
         public bool playAsWhite { get; set; }
@@ -154,14 +149,6 @@ namespace BROINK
             blackBall.CustomUpdate(timeScale.current);
             whiteBall.CustomUpdate(timeScale.current);
 
-            if (state == State.Ready || state == State.Playing)
-            {
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    onEscapeKey.Invoke();
-                }
-            }
-
             if (state == State.Ready)
             {
                 if (Input.anyKeyDown)
@@ -223,7 +210,7 @@ namespace BROINK
 
                 if (wins == 3)
                 {
-                    if (level == MAX_LEVEL)
+                    if (level == 7)
                     {
                         mastered = true;
                     }
