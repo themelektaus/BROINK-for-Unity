@@ -4,8 +4,8 @@ namespace BROINK
 {
     public class Ball_Bot4 : Ball_Bot
     {
-        public override float speedOffset => 6;
-        public override float outwardsFactor => 50;
+        public override float speedOffset => AISettings.active.bot4SpeedOffset;
+        public override float outwardsFactor => AISettings.active.bot4OutwardsFactor;
 
         public override void Process(ref Vector2 output)
         {
@@ -17,7 +17,7 @@ namespace BROINK
             else
             {
                 var score = CalculatePositionScore();
-                if (score > 75)
+                if (score > AISettings.active.bot4MinPositionScore)
                     ModeOffensive(ref output);
                 else
                     ModeDefensive(ref output, advanced: true);

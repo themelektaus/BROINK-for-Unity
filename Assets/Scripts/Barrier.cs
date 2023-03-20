@@ -7,8 +7,8 @@ namespace BROINK
     [RequireComponent(typeof(SpriteRenderer))]
     public class Barrier : MonoBehaviour
     {
-        public float width = .1f;
-        public float maxLifetime = 2;
+        public float width => GameSettings.active.barrierWidth;
+        public float maxLifetime => GameSettings.active.barrierLifetime;
 
         [SerializeField] SoundEffect fadeOutSoundEffect;
 

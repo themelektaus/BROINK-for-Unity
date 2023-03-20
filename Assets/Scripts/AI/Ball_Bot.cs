@@ -7,8 +7,8 @@ namespace BROINK
     [RequireComponent(typeof(Ball))]
     public abstract class Ball_Bot : MonoBehaviour
     {
-        public abstract float speedOffset { get; }
-        public abstract float outwardsFactor { get; }
+        public virtual float speedOffset => 10;
+        public virtual float outwardsFactor => 0;
 
         public abstract void Process(ref Vector2 output);
 
@@ -25,7 +25,7 @@ namespace BROINK
 
         protected float gameRadius => playingField.radius * 100;
 
-        float player_acceleration => ball.acceleration;
+        float player_acceleration => GameSettings.active.ballAcceleration;
 
         protected virtual void Awake()
         {
@@ -59,11 +59,14 @@ namespace BROINK
         {
             var current = playingField.barrier.currentLifetime;
             var max = playingField.barrier.maxLifetime;
-            if (current > max - .75f)
+            if (current > max - AISettings.active.openingTotalDuration)
             {
-                if (current > max - .4f)
+                if (current > max - AISettings.active.openingBackstepDuration)
                 {
-                    var opening_y = 1 - Random.value * 2;
+                    var opening_y = Random.Range(
+                        AISettings.active.openingY.x,
+                        AISettings.active.openingY.y
+                    );
                     output = new(sign(playerSelf_pos.x), opening_y);
                 }
                 return true;
@@ -164,7 +167,7 @@ namespace BROINK
                 fakexpos += fakexspeed;
                 fakeypos += fakeyspeed;
                 // TODO: Make it better
-                var acceleration = player_acceleration / 1.15f;
+                var acceleration = player_acceleration / AISettings.active.breakAccelerationFactor;
                 fakespeed -= acceleration;
                 fakexspeed -= lengthdir_x(acceleration, breakdirection);
                 fakeyspeed -= lengthdir_y(acceleration, breakdirection);

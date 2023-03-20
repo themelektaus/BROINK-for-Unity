@@ -222,7 +222,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   empty: {fileID: 21300000, guid: d029485a7a7bb6945bb6c4566b92020d, type: 3}
   full: {fileID: 21300000, guid: e69e9b4c8a69f6f42b9bd5726ba54692, type: 3}
-  game: {fileID: 1032454359}
   wins: 2
 --- !u!1 &174106045
 GameObject:
@@ -354,6 +353,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438c7db7f9e13b84daabc2413b6d8d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &252419971
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 252419972}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &252419972
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252419971}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1573091520}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &329277761
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,8 +690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5a84c3a3c97f214a92640043746dd42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.1
-  maxLifetime: 2
   fadeOutSoundEffect: {fileID: 11400000, guid: 67ab81e87a311314bb4f0681b8737edc, type: 2}
 --- !u!1 &406919511
 GameObject:
@@ -846,7 +874,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   empty: {fileID: 21300000, guid: 1480693d98b9bf34d9ffbf16e6c2df1a, type: 3}
   full: {fileID: 21300000, guid: 982731776aa2e8940b0d70ceda29607d, type: 3}
-  game: {fileID: 1032454359}
   level: 4
 --- !u!1 &519420028
 GameObject:
@@ -1113,7 +1140,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   empty: {fileID: 21300000, guid: 1480693d98b9bf34d9ffbf16e6c2df1a, type: 3}
   full: {fileID: 21300000, guid: 982731776aa2e8940b0d70ceda29607d, type: 3}
-  game: {fileID: 1032454359}
   level: 7
 --- !u!1 &725475560
 GameObject:
@@ -1214,7 +1240,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   empty: {fileID: 21300000, guid: 1480693d98b9bf34d9ffbf16e6c2df1a, type: 3}
   full: {fileID: 21300000, guid: 982731776aa2e8940b0d70ceda29607d, type: 3}
-  game: {fileID: 1032454359}
   level: 3
 --- !u!1 &735855436
 GameObject:
@@ -1525,7 +1550,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   empty: {fileID: 21300000, guid: 1480693d98b9bf34d9ffbf16e6c2df1a, type: 3}
   full: {fileID: 21300000, guid: 982731776aa2e8940b0d70ceda29607d, type: 3}
-  game: {fileID: 1032454359}
   level: 1
 --- !u!1 &868026697
 GameObject:
@@ -1626,7 +1650,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   empty: {fileID: 21300000, guid: 1480693d98b9bf34d9ffbf16e6c2df1a, type: 3}
   full: {fileID: 21300000, guid: 982731776aa2e8940b0d70ceda29607d, type: 3}
-  game: {fileID: 1032454359}
   level: 5
 --- !u!1 &898750212
 GameObject:
@@ -1728,8 +1751,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   barrier: {fileID: 390783496}
-  size: 10
-  maxLifetime: 28
 --- !u!114 &898750216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1995,9 +2016,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a969c448ef079646b4e75fd80d4a90b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wins: 0
-  level: 1
-  mastered: 0
+  gameSettings: {fileID: 11400000, guid: 05145fe1441465c46bf23beb9f43512a, type: 2}
+  aiSettings: {fileID: 11400000, guid: 8d043792b6f8d5a48a2ce2b3b77df780, type: 2}
   blackBall: {fileID: 5495790401916552797}
   whiteBall: {fileID: 5871336118976307164}
   playingField: {fileID: 898750215}
@@ -2486,7 +2506,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   empty: {fileID: 21300000, guid: d029485a7a7bb6945bb6c4566b92020d, type: 3}
   full: {fileID: 21300000, guid: e69e9b4c8a69f6f42b9bd5726ba54692, type: 3}
-  game: {fileID: 1032454359}
   wins: 1
 --- !u!1 &1335417236
 GameObject:
@@ -2671,7 +2690,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   empty: {fileID: 21300000, guid: d029485a7a7bb6945bb6c4566b92020d, type: 3}
   full: {fileID: 21300000, guid: e69e9b4c8a69f6f42b9bd5726ba54692, type: 3}
-  game: {fileID: 1032454359}
   wins: 3
 --- !u!1 &1434618637
 GameObject:
@@ -2772,7 +2790,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   empty: {fileID: 21300000, guid: 1480693d98b9bf34d9ffbf16e6c2df1a, type: 3}
   full: {fileID: 21300000, guid: 982731776aa2e8940b0d70ceda29607d, type: 3}
-  game: {fileID: 1032454359}
   level: 6
 --- !u!1 &1479160537
 GameObject:
@@ -3045,6 +3062,7 @@ Transform:
   - {fileID: 1705911319}
   - {fileID: 1239781258}
   - {fileID: 1479160538}
+  - {fileID: 252419972}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3194,7 +3212,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   empty: {fileID: 21300000, guid: 1480693d98b9bf34d9ffbf16e6c2df1a, type: 3}
   full: {fileID: 21300000, guid: 982731776aa2e8940b0d70ceda29607d, type: 3}
-  game: {fileID: 1032454359}
   level: 2
 --- !u!1 &1944433861
 GameObject:
@@ -3956,8 +3973,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {x: 0, y: 0}
-  radius: 0.4
-  acceleration: 0.2
   sprite: {fileID: 525885722479868350}
   dropSoundEffect: {fileID: 11400000, guid: 2cc031b173d7bb844a1d26a130b40d3a, type: 2}
   originPosition: {x: 0, y: 0}
@@ -4004,8 +4019,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {x: 0, y: 0}
-  radius: 0.4
-  acceleration: 0.2
   sprite: {fileID: 1906015571613360191}
   dropSoundEffect: {fileID: 11400000, guid: 2cc031b173d7bb844a1d26a130b40d3a, type: 2}
   originPosition: {x: 0, y: 0}

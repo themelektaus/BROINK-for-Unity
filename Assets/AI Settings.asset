@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6da315f398ec324a8f1ead2f8ea6d95, type: 3}
+  m_Name: AI Settings
+  m_EditorClassIdentifier: 
+  openingTotalDuration: 0.75
+  openingBackstepDuration: 0.4
+  openingY: {x: -1, y: 1}
+  breakAccelerationFactor: 1.15
+  bot1SpeedDamping: 0.2
+  bot2SpeedOffset: 10
+  bot2OutwardsFactor: 0
+  bot3SpeedOffset: 10
+  bot3OutwardsFactor: 0
+  bot3ModeSwitchGameRadiusThreshold: 300
+  bot4SpeedOffset: 6
+  bot4OutwardsFactor: 50
+  bot4MinPositionScore: 75
+  bot5SpeedOffset: 10
+  bot5OutwardsFactor: 30
+  bot5MinPositionScore: 0
+  bot6SpeedOffset: 10
+  bot6OutwardsFactor: 0
+  bot6ModeSwitchGameRadiusThreshold: 200
+  bot7SpeedOffset: 1
+  bot7OutwardsFactor: 30
+  bot7MinPositionScore: -10

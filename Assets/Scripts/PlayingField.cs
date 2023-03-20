@@ -4,10 +4,10 @@ namespace BROINK
 {
     public class PlayingField : MonoBehaviour
     {
-        public Barrier barrier;
+        static float size => GameSettings.active.playingFieldSize;
+        static float maxLifetime => GameSettings.active.playingFieldLifetime;
 
-        [SerializeField] float size = 10;
-        [SerializeField] float maxLifetime = 28;
+        public Barrier barrier;
 
         float currentLifetime;
 

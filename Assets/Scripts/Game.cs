@@ -2,15 +2,13 @@ using System;
 using System.Collections;
 
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace BROINK
 {
     public class Game : MonoBehaviour
     {
-        [Range(0, 3)] public int wins;
-        [Range(1, 7)] public int level = 1;
-        public bool mastered;
+        [SerializeField] GameSettings gameSettings;
+        [SerializeField] AISettings aiSettings;
 
         [SerializeField] Ball blackBall;
         [SerializeField] Ball whiteBall;
@@ -48,6 +46,12 @@ namespace BROINK
         State state;
 
         (float current, float target, float velocity, float smoothTime) timeScale;
+
+        void Awake()
+        {
+            GameSettings.active = gameSettings;
+            AISettings.active = aiSettings;
+        }
 
         void Start()
         {
@@ -112,7 +116,7 @@ namespace BROINK
 
             Ball_Bot bot;
 
-            switch (level)
+            switch (GameSettings.active.level)
             {
                 case 1: bot = botBall.gameObject.AddComponent<Ball_Bot1>(); break;
                 case 2: bot = botBall.gameObject.AddComponent<Ball_Bot2>(); break;
@@ -193,33 +197,12 @@ namespace BROINK
 
             if (player)
             {
-                if (
-                    (!blackBallLost && player.ball == blackBall) ||
-                    (!whiteBallLost && player.ball == whiteBall)
-                )
-                {
-                    wins++;
-                }
+                if (!blackBallLost && player.ball == blackBall)
+                    GameSettings.active.Win();
+                else if (!whiteBallLost && player.ball == whiteBall)
+                    GameSettings.active.Win();
                 else
-                {
-                    wins--;
-                    mastered = false;
-                }
-
-                wins = Mathf.Clamp(wins, 0, 3);
-
-                if (wins == 3)
-                {
-                    if (level == 7)
-                    {
-                        mastered = true;
-                    }
-                    else
-                    {
-                        wins = 0;
-                        level++;
-                    }
-                }
+                    GameSettings.active.Lose();
             }
 
             GameOver(
@@ -247,11 +230,11 @@ namespace BROINK
 
             var w = playingField.barrier.width / 2;
 
-            if (blackBall.position.x > -blackBall.radius - w)
-                Bounce(blackBall, -blackBall.radius - w);
+            if (blackBall.position.x > -GameSettings.active.ballRadius - w)
+                Bounce(blackBall, -GameSettings.active.ballRadius - w);
 
-            if (whiteBall.position.x < blackBall.radius + w)
-                Bounce(whiteBall, blackBall.radius + w);
+            if (whiteBall.position.x < GameSettings.active.ballRadius + w)
+                Bounce(whiteBall, GameSettings.active.ballRadius + w);
         }
 
         void UpdateBallCollision()
@@ -273,7 +256,7 @@ namespace BROINK
             blackBall.velocity -= force;
             whiteBall.velocity += force;
 
-            soundEffects.ballHit.Play(force.magnitude * 5, blackBall.position + impactDirection * blackBall.radius);
+            soundEffects.ballHit.Play(force.magnitude * 5, blackBall.position + impactDirection * GameSettings.active.ballRadius);
         }
 
         void GameOver(bool blackWins, bool whiteWins)
@@ -281,7 +264,7 @@ namespace BROINK
             state = State.GameOver;
 
             soundEffects.matchOver.Play();
-            
+
             if (playingField.TryGetComponent(out Shakeable shakeable))
                 shakeable.Shake();
 

@@ -4,10 +4,10 @@ namespace BROINK
 {
     public class Ball : MonoBehaviour
     {
-        public Vector2 input;
+        static float acceleration => GameSettings.active.ballAcceleration;
+        static float radius => GameSettings.active.ballRadius;
 
-        public float radius = .4f;
-        public float acceleration = .02f;
+        public Vector2 input;
 
         [SerializeField] SpriteRenderer sprite;
         [SerializeField] SoundEffect dropSoundEffect;
@@ -18,7 +18,7 @@ namespace BROINK
         float dropDelay;
 
         public Vector2 position { get; set; }
-        public Vector2 velocity {get; set;}
+        public Vector2 velocity { get; set; }
 
         public Vector2 GetPosition() => new(position.x * 100, position.y * -100);
         public Vector2 GetSpeed() => new Vector2(velocity.x, -velocity.y) / (Time.fixedDeltaTime / 1.2f);
@@ -88,12 +88,12 @@ namespace BROINK
             if (other.dropDirection.HasValue)
                 return false;
 
-            return (other.position - position).magnitude < radius + other.radius;
+            return (other.position - position).magnitude < radius * 2;
         }
 
         public bool IsOutside(float radius)
         {
-            return position.magnitude > radius + this.radius;
+            return position.magnitude > radius + Ball.radius;
         }
 
         public void Drop(bool playSoundEffect)

@@ -8,7 +8,6 @@ namespace BROINK
         [SerializeField] Sprite empty;
         [SerializeField] Sprite full;
 
-        [SerializeField] Game game;
         [SerializeField] int level;
 
         SpriteRenderer _renderer;
@@ -20,7 +19,13 @@ namespace BROINK
 
         void Update()
         {
-            _renderer.sprite = game.mastered || game.level > level ? full : empty;
+            if (GameSettings.active.mastered || GameSettings.active.level > level)
+            {
+                _renderer.sprite = full;
+                return;
+            }
+
+            _renderer.sprite = empty;
         }
     }
 }
