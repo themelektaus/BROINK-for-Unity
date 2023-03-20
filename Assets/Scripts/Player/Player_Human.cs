@@ -2,20 +2,14 @@ using UnityEngine;
 
 namespace BROINK
 {
-    [RequireComponent(typeof(Ball))]
-    public abstract class Ball_Player : MonoBehaviour
+    public class Player_Human : Player
     {
+        public override bool isHuman => true;
+
         [SerializeField] protected KeyCode up;
         [SerializeField] protected KeyCode left;
         [SerializeField] protected KeyCode right;
         [SerializeField] protected KeyCode down;
-
-        public Ball ball { get; private set; }
-
-        protected virtual void Awake()
-        {
-            ball = GetComponent<Ball>();
-        }
 
         void Update()
         {

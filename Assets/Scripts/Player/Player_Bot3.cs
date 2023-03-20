@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BROINK
 {
-    public class Ball_Bot3 : Ball_Bot
+    public class Player_Bot3 : Player_Bot
     {
         public override float speedOffset => AISettings.active.bot3SpeedOffset;
         public override float outwardsFactor => AISettings.active.bot3OutwardsFactor;

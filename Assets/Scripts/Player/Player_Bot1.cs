@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BROINK
 {
-    public class Ball_Bot1 : Ball_Bot
+    public class Player_Bot1 : Player_Bot
     {
         public override void Process(ref Vector2 output)
         {

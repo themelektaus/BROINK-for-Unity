@@ -2,22 +2,22 @@ using UnityEngine;
 
 namespace BROINK
 {
-    public class Ball_Bot5 : Ball_Bot
+    public class Player_Bot4 : Player_Bot
     {
-        public override float speedOffset => AISettings.active.bot5SpeedOffset;
-        public override float outwardsFactor => AISettings.active.bot5OutwardsFactor;
+        public override float speedOffset => AISettings.active.bot4SpeedOffset;
+        public override float outwardsFactor => AISettings.active.bot4OutwardsFactor;
 
         public override void Process(ref Vector2 output)
         {
             if (playingField.barrier.enabled)
             {
                 if (!ModeOpening(ref output))
-                    ModeOffensive(ref output);
+                    ModeDefensive(ref output, advanced: true);
             }
             else
             {
                 var score = CalculatePositionScore();
-                if (score > AISettings.active.bot5MinPositionScore)
+                if (score > AISettings.active.bot4MinPositionScore)
                     ModeOffensive(ref output);
                 else
                     ModeDefensive(ref output, advanced: true);

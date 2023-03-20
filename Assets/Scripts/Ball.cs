@@ -37,6 +37,31 @@ namespace BROINK
             PhysicsSystem.balls.Remove(this);
         }
 
+        public Player_Human AddPlayerHuman(int number) => number switch
+        {
+            1 => gameObject.AddComponent<Player_Human1>(),
+            2 => gameObject.AddComponent<Player_Human2>(),
+            _ => gameObject.AddComponent<Player_Human>()
+        };
+
+        public Player_Bot AddPlayerBot(int level) => level switch
+        {
+            1 => gameObject.AddComponent<Player_Bot1>(),
+            2 => gameObject.AddComponent<Player_Bot2>(),
+            3 => gameObject.AddComponent<Player_Bot3>(),
+            4 => gameObject.AddComponent<Player_Bot4>(),
+            5 => gameObject.AddComponent<Player_Bot5>(),
+            6 => gameObject.AddComponent<Player_Bot6>(),
+            7 => gameObject.AddComponent<Player_Bot7>(),
+            _ => gameObject.AddComponent<Player_Bot>()
+        };
+
+        public void RemovePlayer()
+        {
+            if (gameObject.TryGetComponent(out Player player))
+                Destroy(player);
+        }
+
         public void ResetBall()
         {
             dropDirection = null;

@@ -20,4 +20,4 @@ MonoBehaviour:
   playingFieldSize: 10
   playingFieldLifetime: 28
   barrierWidth: 0.1
-  barrierLifetime: 2
+  barrierLifetime: 1.8

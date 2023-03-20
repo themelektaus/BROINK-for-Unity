@@ -4,18 +4,17 @@ namespace BROINK
 {
     using static GameMakerFunctions;
 
-    [RequireComponent(typeof(Ball))]
-    public abstract class Ball_Bot : MonoBehaviour
+    public class Player_Bot : Player
     {
+        public override bool isHuman => false;
+
         public virtual float speedOffset => 10;
         public virtual float outwardsFactor => 0;
 
-        public abstract void Process(ref Vector2 output);
+        public virtual void Process(ref Vector2 output)
+        {
 
-        protected Ball ball { get; private set; }
-
-        public Ball opponentBall { get; set; }
-        public PlayingField playingField { get; set; }
+        }
 
         protected Vector2 playerSelf_pos => ball.GetPosition();
         protected Vector2 playerSelf_speed => ball.GetSpeed();
@@ -26,10 +25,16 @@ namespace BROINK
         protected float gameRadius => playingField.radius * 100;
 
         static float player_acceleration => GameSettings.active.ballAcceleration;
+        
+        float opening_y;
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
-            ball = GetComponent<Ball>();
+            base.Awake();
+            opening_y = Random.Range(
+                AISettings.active.openingY.x,
+                AISettings.active.openingY.y
+            );
         }
 
         void Update()
@@ -62,13 +67,7 @@ namespace BROINK
             if (current > max - AISettings.active.openingTotalDuration)
             {
                 if (current > max - AISettings.active.openingBackstepDuration)
-                {
-                    var opening_y = Random.Range(
-                        AISettings.active.openingY.x,
-                        AISettings.active.openingY.y
-                    );
                     output = new(sign(playerSelf_pos.x), opening_y);
-                }
                 return true;
             }
             return false;

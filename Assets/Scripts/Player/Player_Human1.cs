@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BROINK
 {
-    public class Ball_Player1 : Ball_Player
+    public class Player_Human1 : Player_Human
     {
         protected override void Awake()
         {

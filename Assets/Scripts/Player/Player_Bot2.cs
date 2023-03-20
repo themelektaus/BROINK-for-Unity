@@ -1,0 +1,27 @@
+using UnityEngine;
+
+namespace BROINK
+{
+    public class Player_Bot2 : Player_Bot
+    {
+        public override float speedOffset => AISettings.active.bot2SpeedOffset;
+        public override float outwardsFactor => AISettings.active.bot2OutwardsFactor;
+
+        public override void Process(ref Vector2 output)
+        {
+            if (playingField.barrier.enabled)
+            {
+                if (ModeOpening(ref output))
+                    return;
+
+                ModeOffensive(ref output);
+                OutOfBoundsEmergencyBreak(ref output);
+                return;
+            }
+
+            output = playerOther_pos - playerSelf_pos;
+            output += -playerSelf_speed * 4;
+            OutOfBoundsEmergencyBreak(ref output);
+        }
+    }
+}

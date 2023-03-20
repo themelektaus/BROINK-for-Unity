@@ -38,8 +38,9 @@ namespace BROINK
         public bool playVsFriend { get; set; }
         public bool playAsWhite { get; set; }
 
-        Ball_Player player;
-
+        Player player1;
+        Player player2;
+        
         public enum State { Menu, Ready, Playing, GameOver }
         State state;
 
@@ -65,16 +66,18 @@ namespace BROINK
         {
             bool AnyPlayerInput()
             {
-                if (player)
-                    return player.ball.input.sqrMagnitude != 0;
+                if (player1.isHuman || player2.isHuman)
+                {
+                    if (player1.isHuman && player1.ball.input.sqrMagnitude != 0)
+                        return true;
 
-                if (blackBall.input.sqrMagnitude != 0)
-                    return true;
+                    if (player2.isHuman && player2.ball.input.sqrMagnitude != 0)
+                        return true;
 
-                if (whiteBall.input.sqrMagnitude != 0)
-                    return true;
+                    return false;
+                }
 
-                return false;
+                return true;
             }
 
             PhysicsSystem.NormalUpdate();
@@ -107,14 +110,22 @@ namespace BROINK
             if (state == State.GameOver)
                 return;
 
-            if (player)
+            if (player1.isHuman ^ player2.isHuman && blackBallLost ^ whiteBallLost)
             {
-                if (!blackBallLost && player.ball == blackBall)
-                    GameSettings.active.Win();
-                else if (!whiteBallLost && player.ball == whiteBall)
-                    GameSettings.active.Win();
+                if (player1.isHuman)
+                {
+                    if (!blackBallLost)
+                        GameSettings.active.Win();
+                    else
+                        GameSettings.active.Lose();
+                }
                 else
-                    GameSettings.active.Lose();
+                {
+                    if (!whiteBallLost)
+                        GameSettings.active.Win();
+                    else
+                        GameSettings.active.Lose();
+                }
             }
 
             GameOver(
@@ -140,8 +151,8 @@ namespace BROINK
             playingField.barrier.enabled = false;
             playingField.ResetTransform();
 
-            DestroyAdditionalComponents(blackBall);
-            DestroyAdditionalComponents(whiteBall);
+            blackBall.RemovePlayer();
+            whiteBall.RemovePlayer();
 
             blackBall.ResetBall();
             blackBall.UpdateTransformPosition();
@@ -160,50 +171,25 @@ namespace BROINK
 
             if (playVsFriend)
             {
-                player = null;
-                blackBall.gameObject.AddComponent<Ball_Player1>();
-                whiteBall.gameObject.AddComponent<Ball_Player2>();
-                return;
+                player1 = blackBall.AddPlayerHuman(1);
+                player2 = whiteBall.AddPlayerHuman(2);
             }
-
-            Ball botBall;
-
-            if (playAsWhite)
+            else if (playAsWhite)
             {
-                player = whiteBall.gameObject.AddComponent<Ball_Player2>();
-                botBall = blackBall;
+                player1 = blackBall.AddPlayerBot(GameSettings.active.level);
+                player2 = whiteBall.AddPlayerHuman(2);
             }
             else
             {
-                player = blackBall.gameObject.AddComponent<Ball_Player1>();
-                botBall = whiteBall;
+                player1 = blackBall.AddPlayerHuman(1);
+                player2 = whiteBall.AddPlayerBot(GameSettings.active.level);
             }
 
-            Ball_Bot bot;
+            player1.playingField = playingField;
+            player1.opponentBall = player2.ball;
 
-            switch (GameSettings.active.level)
-            {
-                case 1: bot = botBall.gameObject.AddComponent<Ball_Bot1>(); break;
-                case 2: bot = botBall.gameObject.AddComponent<Ball_Bot2>(); break;
-                case 3: bot = botBall.gameObject.AddComponent<Ball_Bot3>(); break;
-                case 4: bot = botBall.gameObject.AddComponent<Ball_Bot4>(); break;
-                case 5: bot = botBall.gameObject.AddComponent<Ball_Bot5>(); break;
-                case 6: bot = botBall.gameObject.AddComponent<Ball_Bot6>(); break;
-                case 7: bot = botBall.gameObject.AddComponent<Ball_Bot7>(); break;
-                default: return;
-            }
-
-            bot.opponentBall = player.ball;
-            bot.playingField = playingField;
-        }
-
-        void DestroyAdditionalComponents(Ball ball)
-        {
-            if (ball.gameObject.TryGetComponent(out Ball_Player player))
-                Destroy(player);
-
-            if (ball.gameObject.TryGetComponent(out Ball_Bot bot))
-                Destroy(bot);
+            player2.playingField = playingField;
+            player2.opponentBall = player1.ball;
         }
 
         void GameOver(bool blackWins, bool whiteWins)

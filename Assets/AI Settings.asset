@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6da315f398ec324a8f1ead2f8ea6d95, type: 3}
   m_Name: AI Settings
   m_EditorClassIdentifier: 
-  openingTotalDuration: 0.75
+  openingTotalDuration: 0.55
   openingBackstepDuration: 0.4
   openingY: {x: -1, y: 1}
   breakAccelerationFactor: 1.15
