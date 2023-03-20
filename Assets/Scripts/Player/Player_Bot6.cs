@@ -15,9 +15,16 @@ namespace BROINK
             }
 
             if (playingField.barrier.enabled)
+            {
                 ModeDefensive(ref output);
-            else
+                OutOfBoundsEmergencyBreak(ref output);
+                return;
+            }
+
+            if (playerOther_pos.sqrMagnitude > playerSelf_pos.sqrMagnitude)
                 ModeCampCenter(ref output);
+            else
+                ModeDefensive(ref output);
 
             OutOfBoundsEmergencyBreak(ref output);
         }
