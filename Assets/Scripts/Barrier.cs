@@ -1,5 +1,5 @@
 using System.Collections;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 namespace BROINK
@@ -88,7 +88,9 @@ namespace BROINK
             enabled = false;
             while (_renderer.color.a > 0)
             {
-                _renderer.color = _renderer.color.WithAlpha(_renderer.color.a - Time.deltaTime * 5);
+                var color = _renderer.color;
+                color.a = _renderer.color.a - Time.deltaTime * 5;
+                _renderer.color = color;
                 transform.localScale = new(_renderer.color.a, 1, 1);
                 yield return null;
             }
@@ -99,7 +101,9 @@ namespace BROINK
         {
             for (int i = 0; i < 10; i++)
             {
-                _renderer.color = _renderer.color.WithAlpha(Random.value * .5f + .5f);
+                var color = _renderer.color;
+                color.a = Random.value * .5f + .5f;
+                _renderer.color = color;
                 yield return new WaitForSeconds(.05f);
             }
             fizzleCoroutine = null;

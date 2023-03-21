@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fa26f3ce032e09419e817b4550c1872, type: 3}
   m_Name: Ball Icons
   m_EditorClassIdentifier: 
-  none: {fileID: 0}
-  guard: {fileID: 21300000, guid: 5d52b20f865aff242bfcb08c3b6f61a5, type: 3}
-  attack: {fileID: 21300000, guid: 9cfa39010fe314547b3c17a05ff5f403, type: 3}
-  dodge: {fileID: 21300000, guid: 2bb4e96f5d0b02c468932d665a015c54, type: 3}
-  warning: {fileID: 21300000, guid: 3f2d8e263d8314a48a35859e01318f35, type: 3}
+  guard: {fileID: 21300000, guid: 5529a5919a9cee2468568d609625ac81, type: 3}
+  attack: {fileID: 21300000, guid: 1e00f56b9afe4ba49b6e2d4afb42cba0, type: 3}
+  dodge: {fileID: 21300000, guid: 31f0b8addc67dfa4a8b2cd348a7a6ae3, type: 3}
+  warning: {fileID: 21300000, guid: b5894b355af5f7b47b431f7b2689a7e1, type: 3}

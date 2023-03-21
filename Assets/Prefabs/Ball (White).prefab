@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4562028023460928642
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 631899651805983475, guid: 82936229cc5585c4e8fd5cf1bf0c27d7, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 631899651805983475, guid: 82936229cc5585c4e8fd5cf1bf0c27d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 631899651805983475, guid: 82936229cc5585c4e8fd5cf1bf0c27d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 631899651805983475, guid: 82936229cc5585c4e8fd5cf1bf0c27d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801498271855041817, guid: 82936229cc5585c4e8fd5cf1bf0c27d7, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b47921169a576d94689173a40fd07cfe, type: 3}
+    - target: {fileID: 1801498271855041817, guid: 82936229cc5585c4e8fd5cf1bf0c27d7, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -8449627603031541966, guid: 5a98351c4f92e6d44ac549c54fe86226, type: 2}
+    - target: {fileID: 2117897198955979941, guid: 82936229cc5585c4e8fd5cf1bf0c27d7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a7b3c81ba82ac964083713fa90fa2386, type: 3}
+    - target: {fileID: 4938075127662657957, guid: 82936229cc5585c4e8fd5cf1bf0c27d7, type: 3}
+      propertyPath: m_Name
+      value: Ball (White)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 82936229cc5585c4e8fd5cf1bf0c27d7, type: 3}

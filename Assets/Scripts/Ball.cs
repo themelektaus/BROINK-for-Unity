@@ -9,8 +9,8 @@ namespace BROINK
 
         public Vector2 input;
         public BallIcons icons;
-        
-        [SerializeField] SpriteRenderer iconRenderer;
+
+        [SerializeField] BallMessageSpawner messageSpawner;
         [SerializeField] SoundEffect hitSoundEffect;
         [SerializeField] SoundEffect dropSoundEffect;
 
@@ -74,7 +74,7 @@ namespace BROINK
 
         public void NormalUpdate(float timeScale)
         {
-            iconRenderer.sprite = icon;
+            messageSpawner.icon = icon;
 
             if (!dropDirection.HasValue)
             {
