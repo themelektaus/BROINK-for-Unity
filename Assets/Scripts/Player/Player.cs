@@ -15,5 +15,10 @@ namespace BROINK
         {
             ball = GetComponent<Ball>();
         }
+
+        void OnDisable()
+        {
+            ball.icon = null;
+        }
     }
 }

@@ -162,11 +162,12 @@ namespace BROINK
 
             ui.blackWins.SetActive(false);
             ui.whiteWins.SetActive(false);
-            ui.backButton.SetActive(true);
         }
 
         public void StartGame()
         {
+            ui.backButton.SetActive(true);
+
             state = State.Ready;
 
             if (playVsFriend)
