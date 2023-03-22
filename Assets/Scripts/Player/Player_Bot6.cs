@@ -4,11 +4,12 @@ namespace BROINK
 {
     public class Player_Bot6 : Player_Bot
     {
-        public override Config config => AISettings.active.bot6Config;
+        [SerializeField, Range(0, 500)]
+        float modeSwitchGameRadiusThreshold = 200;
 
         public override void Process(ref Vector2 output)
         {
-            if (gameRadius < AISettings.active.bot6ModeSwitchGameRadiusThreshold)
+            if (gameRadius < modeSwitchGameRadiusThreshold)
             {
                 ModeOffensive(ref output);
                 return;

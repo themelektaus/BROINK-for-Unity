@@ -19,27 +19,5 @@ MonoBehaviour:
   openingDefenseHardness: 2
   defenseHardness: 4
   breakAccelerationFactor: 1.15
-  bot1SpeedDamping: 0.2
-  bot2Config:
-    speedOffset: 10
-    outwardsFactor: 0
-  bot3Config:
-    speedOffset: 10
-    outwardsFactor: 0
-  bot3ModeSwitchGameRadiusThreshold: 300
-  bot4Config:
-    speedOffset: 6
-    outwardsFactor: 50
-  bot4MinPositionScore: 75
-  bot5Config:
-    speedOffset: 10
-    outwardsFactor: 30
-  bot5MinPositionScore: 0
-  bot6Config:
-    speedOffset: 10
-    outwardsFactor: 0
-  bot6ModeSwitchGameRadiusThreshold: 200
-  bot7Config:
-    speedOffset: 1
-    outwardsFactor: 30
-  bot7MinPositionScore: -10
+  randomOpening: 1
+  randomRotationRangeAgainstAI: 20

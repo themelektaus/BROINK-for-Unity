@@ -3,12 +3,10 @@
 namespace BROINK
 {
     [RequireComponent(typeof(SpriteRenderer))]
-    public class LevelIcon : MonoBehaviour
+    public abstract class ReadonlyCheckbox : MonoBehaviour
     {
-        [SerializeField] Sprite empty;
-        [SerializeField] Sprite full;
-
-        [SerializeField] int level;
+        [SerializeField] Sprite uncheckedSprite;
+        [SerializeField] Sprite checkedSprite;
 
         SpriteRenderer _renderer;
 
@@ -17,15 +15,17 @@ namespace BROINK
             _renderer = GetComponent<SpriteRenderer>();
         }
 
+        public abstract bool IsChecked();
+
         void Update()
         {
-            if (GameSettings.active.mastered || GameSettings.active.level > level)
+            if (IsChecked())
             {
-                _renderer.sprite = full;
+                _renderer.sprite = checkedSprite;
                 return;
             }
 
-            _renderer.sprite = empty;
+            _renderer.sprite = uncheckedSprite;
         }
     }
 }

@@ -6,7 +6,8 @@ namespace BROINK
     {
         [SerializeField] BallMessage message;
         [SerializeField] float duration = 1;
-        [SerializeField] float repeatTime = 3;
+
+        public bool visible => message.icon && 0 < time && time < duration;
 
         public Sprite icon;
 
@@ -18,19 +19,16 @@ namespace BROINK
 
             UpdateIcon();
 
-            message.visible = message.icon && 0 < time && time < duration;
+            message.visible = visible;
         }
 
         void UpdateIcon()
         {
-            if (time < repeatTime)
-            {
-                if (time < .2f)
-                    return;
+            if (time < .05f)
+                return;
 
-                if (message.icon == icon)
-                    return;
-            }
+            if (message.icon == icon)
+                return;
 
             time = -.05f;
             message.icon = icon;

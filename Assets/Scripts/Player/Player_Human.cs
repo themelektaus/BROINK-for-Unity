@@ -4,8 +4,6 @@ namespace BROINK
 {
     public class Player_Human : Player
     {
-        public override bool isHuman => true;
-
         [SerializeField] protected KeyCode up;
         [SerializeField] protected KeyCode left;
         [SerializeField] protected KeyCode right;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using UnityEngine;
 
@@ -53,9 +54,21 @@ namespace BROINK
                 foreach (var ball in balls)
                     ball.UpdateCollision(barrier);
 
-            if (balls.Count == 2)
-                if (balls[0].CollidesWith(balls[1]))
-                    balls[0].UpdateCollision(balls[1]);
+            var transferImpact = true;
+
+            var nextBalls = balls.ToList();
+            foreach (var ball in balls)
+            {
+                nextBalls.RemoveAt(0);
+                foreach (var other in nextBalls)
+                {
+                    if (ball.CollidesWith(other))
+                    {
+                        ball.UpdateCollision(other, transferImpact);
+                        transferImpact = false;
+                    }
+                }
+            }
 
             foreach (var ball in balls)
                 ball.UpdateTransformPosition();

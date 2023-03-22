@@ -7,10 +7,8 @@ namespace BROINK
     {
         public static GameSettings active;
 
-        [Header("Game Progression")]
-        [Range(0, 3)] public int wins;
-        [Range(1, 7)] public int level = 1;
-        public bool mastered;
+        [Header("General")]
+        public int requiredWins = 3;
 
         [Header("Ball")]
         public float ballRadius = .4f;
@@ -22,29 +20,6 @@ namespace BROINK
 
         [Header("Start Wall")]
         public float barrierWidth = .1f;
-        public float barrierLifetime = 2;
-
-        public void Win()
-        {
-            wins = Mathf.Min(3, wins + 1);
-
-            if (wins < 3)
-                return;
-
-            if (level == 7)
-            {
-                mastered = true;
-                return;
-            }
-
-            wins = 0;
-            level++;
-        }
-
-        public void Lose()
-        {
-            wins = Mathf.Max(0, wins - 1);
-            mastered = false;
-        }
+        public float barrierLifetime = 1.8f;
     }
 }

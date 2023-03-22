@@ -13,6 +13,12 @@ namespace BROINK
 
         (float current, float target, float velocity) alpha = (0, 0, 0);
 
+        void Awake()
+        {
+            visible = false;
+            Update();
+        }
+
         void Update()
         {
             if (visible)

@@ -4,7 +4,14 @@ namespace BROINK
 {
     public class Player_Bot4 : Player_Bot
     {
-        public override Config config => AISettings.active.bot4Config;
+        [SerializeField, Range(-100, 100)]
+        float minPositionScore = 75;
+
+        void Reset()
+        {
+            speedOffset = 6;
+            outwardsFactor = 50;
+        }
 
         public override void Process(ref Vector2 output)
         {
@@ -19,7 +26,7 @@ namespace BROINK
             }
 
             var score = CalculatePositionScore();
-            if (score > AISettings.active.bot4MinPositionScore)
+            if (score > minPositionScore)
                 ModeOffensive(ref output);
             else
                 ModeDefensive(ref output, advanced: true);

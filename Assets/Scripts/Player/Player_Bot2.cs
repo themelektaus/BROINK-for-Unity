@@ -4,8 +4,6 @@ namespace BROINK
 {
     public class Player_Bot2 : Player_Bot
     {
-        public override Config config => AISettings.active.bot2Config;
-
         public override void Process(ref Vector2 output)
         {
             if (playingField.barrier.enabled)

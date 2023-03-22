@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa822a157cbc08442bb7c933d54532b0, type: 3}
   m_Name: Game Settings
   m_EditorClassIdentifier: 
-  wins: 0
-  level: 1
-  mastered: 0
+  requiredWins: 3
   ballRadius: 0.4
   ballAcceleration: 0.2
   playingFieldSize: 10

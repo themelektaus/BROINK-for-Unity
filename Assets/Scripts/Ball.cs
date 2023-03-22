@@ -8,16 +8,17 @@ namespace BROINK
         static float radius => GameSettings.active.ballRadius;
 
         public Vector2 input;
-        public BallIcons icons;
+        public SpriteRenderer spriteRenderer;
 
         [SerializeField] BallMessageSpawner messageSpawner;
         [SerializeField] SoundEffect hitSoundEffect;
         [SerializeField] SoundEffect dropSoundEffect;
 
-        AudioSource rollAudioSource;
-        [SerializeField] Vector2 originPosition;
-        Vector2? dropDirection;
-        float dropDelay;
+        public BallColor color { get; private set; }
+
+        public bool hasDropped { get; private set; }
+        Vector2 dropDirection;
+        float dropDelay = .1f;
 
         public Vector2 position { get; set; }
         public Vector2 velocity { get; set; }
@@ -29,9 +30,6 @@ namespace BROINK
         void Awake()
         {
             PhysicsSystem.balls.Add(this);
-
-            rollAudioSource = GetComponent<AudioSource>();
-            originPosition = transform.localPosition;
         }
 
         void OnDestroy()
@@ -39,53 +37,38 @@ namespace BROINK
             PhysicsSystem.balls.Remove(this);
         }
 
-        public Player_Human AddPlayerHuman(int number) => number switch
+        public Ball Spawn(Vector2 position)
         {
-            1 => gameObject.AddComponent<Player_Human1>(),
-            2 => gameObject.AddComponent<Player_Human2>(),
-            _ => gameObject.AddComponent<Player_Human>()
-        };
-
-        public Player_Bot AddPlayerBot(int level) => level switch
-        {
-            1 => gameObject.AddComponent<Player_Bot1>(),
-            2 => gameObject.AddComponent<Player_Bot2>(),
-            3 => gameObject.AddComponent<Player_Bot3>(),
-            4 => gameObject.AddComponent<Player_Bot4>(),
-            5 => gameObject.AddComponent<Player_Bot5>(),
-            6 => gameObject.AddComponent<Player_Bot6>(),
-            7 => gameObject.AddComponent<Player_Bot7>(),
-            _ => gameObject.AddComponent<Player_Bot>()
-        };
-
-        public void RemovePlayer()
-        {
-            if (gameObject.TryGetComponent(out Player player))
-                Destroy(player);
+            var ball = Instantiate(this, position, Quaternion.identity);
+            ball.position = position;
+            return ball;
         }
 
-        public void ResetBall()
+        public Ball AddAppearance(Ball_Appearance appearance)
         {
-            dropDirection = null;
-            dropDelay = .1f;
-            position = originPosition;
-            velocity = Vector2.zero;
+            var instance = Instantiate(appearance, transform);
+            instance.ball = this;
+            color = instance.color;
+            return this;
+        }
+
+        public T CreatePlayer<T>(T player, PlayingField playingField) where T : Player
+        {
+            var instance = Instantiate(player, transform);
+            instance.ball = this;
+            instance.playingField = playingField;
+            return instance;
         }
 
         public void NormalUpdate(float timeScale)
         {
             messageSpawner.icon = icon;
 
-            if (!dropDirection.HasValue)
+            if (!hasDropped)
             {
-                var _velocity = velocity.magnitude;
-                rollAudioSource.pitch = _velocity * 2 + .8f;
-                rollAudioSource.volume = _velocity * 10 - .3f;
                 transform.localScale = Vector3.one;
                 return;
             }
-
-            rollAudioSource.volume = 0;
 
             if (dropDelay > 0)
             {
@@ -102,9 +85,9 @@ namespace BROINK
         {
             var deltaTime = Time.fixedDeltaTime * timeScale;
 
-            if (dropDirection.HasValue)
+            if (hasDropped)
             {
-                position += dropDirection.Value * (deltaTime * transform.localScale.x * 2);
+                position += dropDirection * (deltaTime * transform.localScale.x * 2);
                 return;
             }
 
@@ -139,24 +122,27 @@ namespace BROINK
             var barrierWidth = GameSettings.active.barrierWidth;
 
             x = -ballRadius - barrierWidth;
-            if (originPosition.x < 0 && position.x > x)
+            if (position.x < 0 && position.x > x)
                 return true;
 
             x = ballRadius + barrierWidth;
-            if (originPosition.x > 0 && position.x < x)
+            if (position.x > 0 && position.x < x)
                 return true;
 
             x = 0;
             return false;
         }
 
-        public void UpdateCollision(Ball other)
+        public void UpdateCollision(Ball other, bool transferImpact)
         {
             while (CollidesWith(other))
             {
                 position -= velocity * Time.fixedDeltaTime;
                 other.position -= other.velocity * Time.fixedDeltaTime;
             }
+
+            if (!transferImpact)
+                return;
 
             var impactDirection = (other.position - position).normalized;
 
@@ -169,15 +155,29 @@ namespace BROINK
             velocity -= force;
             other.velocity += force;
 
-            hitSoundEffect.Play(force.magnitude * 5, position + impactDirection * GameSettings.active.ballRadius);
+            if (color != other.color)
+            {
+                if (!messageSpawner.visible)
+                    icon = null;
+
+                if (!other.messageSpawner.visible)
+                    other.icon = null;
+            }
+
+            {
+                var clipIndex = force.magnitude * 5;
+                var position = this.position + impactDirection * GameSettings.active.ballRadius;
+                var volume = clipIndex * 2;
+                hitSoundEffect.Play(clipIndex, position, volume);
+            }
         }
 
         public bool CollidesWith(Ball other)
         {
-            if (dropDirection.HasValue)
+            if (hasDropped)
                 return false;
 
-            if (other.dropDirection.HasValue)
+            if (other.hasDropped)
                 return false;
 
             return (other.position - position).magnitude < radius * 2;
@@ -190,11 +190,14 @@ namespace BROINK
 
         public void Drop(bool playSoundEffect)
         {
-            if (playSoundEffect)
-                dropSoundEffect.Play(position);
+            if (hasDropped)
+                return;
 
-            if (!dropDirection.HasValue)
-                dropDirection = velocity.normalized;
+            hasDropped = true;
+            dropDirection = velocity.normalized;
+
+            if (playSoundEffect)
+                dropSoundEffect.Play(position);            
         }
     }
 }

@@ -36,7 +36,7 @@ namespace BROINK
 
         float GetScale()
         {
-            return currentLifetime / maxLifetime * .8f + .2f;
+            return currentLifetime / maxLifetime * .95f + .05f;
         }
     }
 }

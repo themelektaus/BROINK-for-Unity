@@ -20,30 +20,8 @@ namespace BROINK
         [Header("Out of Bounce Emergency Break")]
         [Range(0, 2)] public float breakAccelerationFactor = 1.15f;
 
-        [Header("Bot 1")]
-        [Range(0, 1)] public float bot1SpeedDamping = .2f;
-
-        [Header("Bot 2")]
-        public Player_Bot.Config bot2Config = new();
-
-        [Header("Bot 3")]
-        public Player_Bot.Config bot3Config = new();
-        [Range(0, 500)] public float bot3ModeSwitchGameRadiusThreshold = 300;
-
-        [Header("Bot 4")]
-        public Player_Bot.Config bot4Config = new() { speedOffset = 6, outwardsFactor = 50 };
-        [Range(-100, 100)] public float bot4MinPositionScore = 75;
-
-        [Header("Bot 5")]
-        public Player_Bot.Config bot5Config = new() { outwardsFactor = 30 };
-        [Range(-100, 100)] public float bot5MinPositionScore = 0;
-
-        [Header("Bot 6")]
-        public Player_Bot.Config bot6Config = new();
-        [Range(0, 500)] public float bot6ModeSwitchGameRadiusThreshold = 200;
-
-        [Header("Bot 7")]
-        public Player_Bot.Config bot7Config = new() { speedOffset = 1, outwardsFactor = 30 };
-        [Range(-100, 100)] public float bot7MinPositionScore = -10;
+        [Header("Randomness")]
+        public bool randomOpening = true;
+        [Range(0, 90)] public float randomRotationRangeAgainstAI = 20;
     }
 }

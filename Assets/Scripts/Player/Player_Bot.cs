@@ -1,3 +1,5 @@
+using System.Linq;
+
 using UnityEngine;
 
 namespace BROINK
@@ -6,63 +8,115 @@ namespace BROINK
 
     public class Player_Bot : Player
     {
-        public override bool isHuman => false;
+        [SerializeField, Range(0, 10)] protected float speedOffset = 10;
+        [SerializeField, Range(0, 100)] protected float outwardsFactor = 0;
 
-        [System.Serializable]
-        public class Config
-        {
-            [Range(0, 10)] public float speedOffset = 10;
-            [Range(0, 100)] public float outwardsFactor;
-        }
-        public virtual Config config => new();
+        float GetSpeedOffset() => opponent is Player_Bot
+            ? Mathf.Max(5, speedOffset)
+            : speedOffset;
 
         public enum Mode { None, CampCenter, Offensive, Defensive, Emergency }
-        protected Mode mode;
-
-        public virtual void Process(ref Vector2 output)
-        {
-
-        }
+        public Mode mode { get; protected set; }
 
         protected Vector2 playerSelf_pos => ball.GetPosition();
         protected Vector2 playerSelf_speed => ball.GetSpeed();
 
-        protected Vector2 playerOther_pos => opponentBall.GetPosition();
-        protected Vector2 playerOther_speed => opponentBall.GetSpeed();
+        protected Vector2 playerOther_pos => opponent.ball.GetPosition();
+        protected Vector2 playerOther_speed => opponent.ball.GetSpeed();
 
         protected float gameRadius => playingField.radius * 100;
 
         static float player_acceleration => GameSettings.active.ballAcceleration;
 
+        float seed;
+
+        Player opponent;
+        float opponentTimer;
+
         float opening_y;
         float? opening_dodge;
 
-        protected override void Awake()
+        void Awake()
         {
-            base.Awake();
-            opening_y = Random.Range(
-                AISettings.active.openingY.x,
-                AISettings.active.openingY.y
-            );
+            seed = Random.value * 100000;
+            if (AISettings.active.randomOpening)
+            {
+                opening_y = Random.Range(
+                    AISettings.active.openingY.x,
+                    AISettings.active.openingY.y
+                );
+            }
         }
+
+        public Player_Bot AddIcons(Ball_Icons icons)
+        {
+            var instance = Instantiate(icons, transform);
+            instance.bot = this;
+            return this;
+        }
+
+        public virtual void Process(ref Vector2 output) { }
 
         void Update()
         {
+            UpdateOpponent();
+
             mode = Mode.None;
             var output = new Vector2();
             if (playingField.enabled)
-                Process(ref output);
-            else if (ball.GetSpeed().magnitude > .5f)
-                output = -ball.GetSpeed();
-            ball.input = new(output.x, -output.y);
-            ball.icon = mode switch
             {
-                Mode.CampCenter => ball.icons.guard,
-                Mode.Offensive => ball.icons.attack,
-                Mode.Defensive => ball.icons.dodge,
-                Mode.Emergency => ball.icons.warning,
-                _ => null
-            };
+                Process(ref output);
+                ProcessRandomRotate(ref output);
+            }
+            else if (ball.GetSpeed().magnitude > .5f)
+            {
+                output = -ball.GetSpeed();
+            }
+            ball.input = new(output.x, -output.y);
+        }
+
+        void UpdateOpponent()
+        {
+            var opponents = players
+                .Where(x => x.ball.color != ball.color)
+                .OrderBy(x => x.ball.hasDropped);
+
+            var opponent = opponents.FirstOrDefault();
+            if (!opponent || opponent.ball.hasDropped)
+            {
+                this.opponent = opponent;
+                return;
+            }
+
+            if (this.opponent && this.opponent.ball.hasDropped)
+                opponentTimer = 0;
+
+            if (opponentTimer > 0)
+            {
+                opponentTimer -= Time.deltaTime;
+                return;
+            }
+
+            opponentTimer = GameSettings.active.barrierLifetime + 1 + Random.value * 3;
+            this.opponent = choose(opponents.Where(x => !x.ball.hasDropped).ToArray());
+        }
+
+        void ProcessRandomRotate(ref Vector2 output)
+        {
+            if (opponent is not Player_Bot)
+                return;
+
+            var distance = point_distance(playerSelf_pos, playerOther_pos);
+            var speed = playerSelf_speed.magnitude + playerOther_speed.magnitude;
+            var f = Mathf.Lerp(1, 5, (200 - distance) / 200 * Mathf.Max(0, 4 - speed));
+            var angle = AISettings.active.randomRotationRangeAgainstAI * f;
+            var degrees = Mathf.PerlinNoise1D(Time.time + seed) * angle - angle / 2;
+            float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
+            float cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
+            float tx = output.x;
+            float ty = output.y;
+            output.x = (cos * tx) - (sin * ty);
+            output.y = (sin * tx) + (cos * ty);
         }
 
         protected float CalculatePositionScore()
@@ -134,7 +188,7 @@ namespace BROINK
 
             target_direction = point_direction(playerSelf_pos, target);
             var enemyspeed = point_distance(playerOther_speed, new());
-            output = GetOutputByDirection(target_direction, enemyspeed + config.speedOffset);
+            output = GetOutputByDirection(target_direction, enemyspeed + GetSpeedOffset());
         }
 
         protected void ModeDefensive(ref Vector2 output, bool opening = false, bool advanced = false)
@@ -150,7 +204,7 @@ namespace BROINK
                     mode = Mode.Defensive;
 
                     var direction_to_enemy = point_direction(playerSelf_pos, playerOther_pos);
-                    output = GetOutputByDirection(direction_to_enemy, enemy_speed + config.speedOffset);
+                    output = GetOutputByDirection(direction_to_enemy, enemy_speed + GetSpeedOffset());
                     return;
                 }
             }
@@ -170,9 +224,9 @@ namespace BROINK
                 angle_diff = choose(1, -1);
             var outwards_percentage = point_distance(new(), playerSelf_pos) / gameRadius;
             var hardness = opening ? AISettings.active.openingDefenseHardness : AISettings.active.defenseHardness;
-            mytargetdir = my_direction_from_center + (90 + own_speed * hardness + outwards_percentage * config.outwardsFactor) * sign(angle_diff);
+            mytargetdir = my_direction_from_center + (90 + own_speed * hardness + outwards_percentage * outwardsFactor) * sign(angle_diff);
 
-            output = GetOutputByDirection(mytargetdir, enemy_speed + config.speedOffset);
+            output = GetOutputByDirection(mytargetdir, enemy_speed + GetSpeedOffset());
         }
 
         protected void OutOfBoundsEmergencyBreak(ref Vector2 output, bool advanced = false)
