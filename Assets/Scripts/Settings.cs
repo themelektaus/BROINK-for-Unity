@@ -3,9 +3,18 @@
 namespace BROINK
 {
     [CreateAssetMenu]
-    public class GameSettings : ScriptableObject
+    public class Settings : ScriptableObject
     {
-        public static GameSettings active;
+        static Settings _active;
+        public static Settings active
+        {
+            get
+            {
+                if (!_active)
+                    _active = CreateInstance<Settings>();
+                return _active;
+            }
+        }
 
         [Header("General")]
         public int requiredWins = 3;

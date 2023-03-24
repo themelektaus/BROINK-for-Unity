@@ -8,6 +8,8 @@ namespace BROINK
 
     public class Player_Bot : Player
     {
+        [SerializeField] AISettings settings;
+
         [SerializeField, Range(0, 10)] protected float speedOffset = 10;
         [SerializeField, Range(0, 100)] protected float outwardsFactor = 0;
 
@@ -26,7 +28,7 @@ namespace BROINK
 
         protected float gameRadius => playingField.radius * 100;
 
-        static float player_acceleration => GameSettings.active.ballAcceleration;
+        static float player_acceleration => Settings.active.ballAcceleration;
 
         float seed;
 
@@ -39,11 +41,11 @@ namespace BROINK
         void Awake()
         {
             seed = Random.value * 100000;
-            if (AISettings.active.randomOpening)
+            if (settings.randomOpening)
             {
                 opening_y = Random.Range(
-                    AISettings.active.openingY.x,
-                    AISettings.active.openingY.y
+                    settings.openingY.x,
+                    settings.openingY.y
                 );
             }
         }
@@ -97,7 +99,7 @@ namespace BROINK
                 return;
             }
 
-            opponentTimer = GameSettings.active.barrierLifetime + 1 + Random.value * 3;
+            opponentTimer = Settings.active.barrierLifetime + 1 + Random.value * 3;
             this.opponent = choose(opponents.Where(x => !x.ball.hasDropped).ToArray());
         }
 
@@ -109,7 +111,7 @@ namespace BROINK
             var distance = point_distance(playerSelf_pos, playerOther_pos);
             var speed = playerSelf_speed.magnitude + playerOther_speed.magnitude;
             var f = Mathf.Lerp(1, 5, (200 - distance) / 200 * Mathf.Max(0, 4 - speed));
-            var angle = AISettings.active.randomRotationRangeAgainstAI * f;
+            var angle = settings.randomRotationRangeAgainstAI * f;
             var degrees = Mathf.PerlinNoise1D(Time.time + seed) * angle - angle / 2;
             float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
             float cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
@@ -138,11 +140,11 @@ namespace BROINK
         protected bool ModeOpening(ref Vector2 output)
         {
             var current = playingField.barrier.currentLifetime;
-            var max = GameSettings.active.barrierLifetime;
-            if (current > max - AISettings.active.openingTotalDuration)
+            var max = Settings.active.barrierLifetime;
+            if (current > max - settings.openingTotalDuration)
             {
                 mode = Mode.Offensive;
-                if (current > max - AISettings.active.openingBackstepDuration)
+                if (current > max - settings.openingBackstepDuration)
                     output = new(sign(playerSelf_pos.x), opening_y);
                 return true;
             }
@@ -151,7 +153,7 @@ namespace BROINK
 
         protected void ModeOpeningDodge(ref Vector2 output)
         {
-            opening_dodge ??= playerOther_speed.magnitude > AISettings.active.openingDodgeThreshold ? 1 : -1;
+            opening_dodge ??= playerOther_speed.magnitude > settings.openingDodgeThreshold ? 1 : -1;
             if (opening_dodge.Value > 0)
                 opening_dodge = Mathf.Max(0, opening_dodge.Value - Time.fixedDeltaTime);
             if (opening_dodge.Value == 0)
@@ -223,7 +225,7 @@ namespace BROINK
             if (angle_diff == 0 || angle_diff == 180 || angle_diff == -180)
                 angle_diff = choose(1, -1);
             var outwards_percentage = point_distance(new(), playerSelf_pos) / gameRadius;
-            var hardness = opening ? AISettings.active.openingDefenseHardness : AISettings.active.defenseHardness;
+            var hardness = opening ? settings.openingDefenseHardness : settings.defenseHardness;
             mytargetdir = my_direction_from_center + (90 + own_speed * hardness + outwards_percentage * outwardsFactor) * sign(angle_diff);
 
             output = GetOutputByDirection(mytargetdir, enemy_speed + GetSpeedOffset());
@@ -264,7 +266,7 @@ namespace BROINK
                 fakexpos += fakexspeed;
                 fakeypos += fakeyspeed;
                 // TODO: Make it better
-                var acceleration = player_acceleration / AISettings.active.breakAccelerationFactor;
+                var acceleration = player_acceleration / settings.breakAccelerationFactor;
                 fakespeed -= acceleration;
                 fakexspeed -= lengthdir_x(acceleration, breakdirection);
                 fakeyspeed -= lengthdir_y(acceleration, breakdirection);

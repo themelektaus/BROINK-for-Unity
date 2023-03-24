@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f491a608281e645b93e6d50f2754ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 8d043792b6f8d5a48a2ce2b3b77df780, type: 2}
   speedOffset: 10
   outwardsFactor: 0
   speedDamping: 0.2

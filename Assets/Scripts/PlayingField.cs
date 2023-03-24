@@ -4,8 +4,8 @@ namespace BROINK
 {
     public class PlayingField : MonoBehaviour
     {
-        static float size => GameSettings.active.playingFieldSize;
-        static float maxLifetime => GameSettings.active.playingFieldLifetime;
+        static float size => Settings.active.playingFieldSize;
+        static float maxLifetime => Settings.active.playingFieldLifetime;
 
         public Barrier barrier;
 
@@ -15,9 +15,7 @@ namespace BROINK
 
         void OnEnable()
         {
-            barrier.enabled = true;
             currentLifetime = maxLifetime;
-            ResetTransform();
         }
 
         public void ResetTransform()

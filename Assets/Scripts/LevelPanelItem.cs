@@ -2,16 +2,18 @@
 {
     public class LevelPanelItem : ReadonlyCheckbox
     {
-        public Game game { get; set; }
+        public LevelPanel panel { get; set; }
+
         public int level;
 
         public override bool IsChecked()
         {
             var level = this.level;
-            if (game.wins >= GameSettings.active.requiredWins)
+
+            if (panel.ingameFSM.wins >= Settings.active.requiredWins)
                 level--;
 
-            return game.level > level;
+            return panel.ingameFSM.level > level;
         }
     }
 }

@@ -5,8 +5,6 @@ namespace BROINK
     [CreateAssetMenu]
     public class AISettings : ScriptableObject
     {
-        public static AISettings active;
-
         [Header("Opening Mode")]
         [Range(0, 2)] public float openingTotalDuration = .55f;
         [Range(0, 1)] public float openingBackstepDuration = .4f;

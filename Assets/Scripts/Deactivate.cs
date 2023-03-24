@@ -7,6 +7,7 @@ namespace BROINK
         void Awake()
         {
             gameObject.SetActive(false);
+            Destroy(this);
         }
     }
 }

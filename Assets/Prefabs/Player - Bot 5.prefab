@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf3c4258b7afeb4298c1b907cbe0516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 8d043792b6f8d5a48a2ce2b3b77df780, type: 2}
   speedOffset: 10
   outwardsFactor: 30
   minPositionScore: 0

@@ -7,6 +7,7 @@ namespace BROINK
         void Awake()
         {
             transform.localPosition = new();
+            Destroy(this);
         }
     }
 }

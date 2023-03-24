@@ -15,6 +15,7 @@ MonoBehaviour:
   group: {fileID: 1359015753269135571, guid: 5a98351c4f92e6d44ac549c54fe86226, type: 2}
   volume: {x: 0.4, y: 0.4}
   pitch: {x: 0.8, y: 1}
+  playInterval: 0
   clips:
   - {fileID: 8300000, guid: 56c0219b26889e449ba9e70ea95632fe, type: 3}
   - {fileID: 8300000, guid: ad584c2778fe2804cb71e75ae70fcf80, type: 3}

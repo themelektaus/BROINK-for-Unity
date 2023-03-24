@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db237d1efd9a73c44913e77d9bc0b0bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 8d043792b6f8d5a48a2ce2b3b77df780, type: 2}
   speedOffset: 6
   outwardsFactor: 50
   minPositionScore: 75

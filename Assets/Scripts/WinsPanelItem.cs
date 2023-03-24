@@ -2,12 +2,13 @@
 {
     public class WinsPanelItem : ReadonlyCheckbox
     {
-        public Game game { get; set; }
+        public WinsPanel panel { get; set; }
+
         public int wins;
 
         public override bool IsChecked()
         {
-            return game.wins >= wins;
+            return panel.ingameFSM.wins >= wins;
         }
     }
 }
