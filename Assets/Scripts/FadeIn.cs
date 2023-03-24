@@ -11,6 +11,7 @@ namespace BROINK
         void Awake()
         {
             _renderer = GetComponent<SpriteRenderer>();
+            gameObject.SetActive(false);
         }
 
         void OnEnable()

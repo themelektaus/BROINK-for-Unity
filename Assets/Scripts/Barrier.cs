@@ -24,7 +24,7 @@ namespace BROINK
 
         void OnEnable()
         {
-            currentLifetime = Settings.active.barrierLifetime;
+            currentLifetime = GlobalSettings.active.barrierLifetime;
             ResetTransform();
         }
 

@@ -1885,10 +1885,11 @@ MonoBehaviour:
   wins: 0
   level: 1
   playingField: {fileID: 898750215}
-  backButton: {fileID: 1479160537}
+  globalSettings: {fileID: 11400000, guid: 9d079a5ece75bd04aba30d6c7204fa4b, type: 2}
   ingamePanels:
   - {fileID: 1705911318}
   - {fileID: 1239781257}
+  backButton: {fileID: 1479160537}
   ball: {fileID: 9050718204715255728, guid: 4c0e132caf87a3543b633ca8d8d87632, type: 3}
   ballAppearances:
   - {fileID: 5568114972302872550, guid: 2b17f145074ba0345851107cc710ff2a, type: 3}

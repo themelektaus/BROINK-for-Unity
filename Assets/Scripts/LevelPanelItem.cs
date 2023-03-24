@@ -10,7 +10,7 @@
         {
             var level = this.level;
 
-            if (panel.ingameFSM.wins >= Settings.active.requiredWins)
+            if (panel.ingameFSM.wins >= GlobalSettings.active.requiredWins)
                 level--;
 
             return panel.ingameFSM.level > level;

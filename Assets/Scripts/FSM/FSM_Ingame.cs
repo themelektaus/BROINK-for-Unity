@@ -7,6 +7,8 @@ namespace BROINK
 {
     public class FSM_Ingame : FSM
     {
+        [SerializeField] GlobalSettings globalSettings;
+
         public int wins = 0;
         public int level = 1;
 
@@ -30,6 +32,13 @@ namespace BROINK
         public int botsCount => bots.Count;
 
         readonly List<Player> players = new();
+
+        protected override void Awake()
+        {
+            GlobalSettings.active = globalSettings;
+
+            base.Awake();
+        }
 
         protected override void OnStart()
         {
@@ -210,9 +219,9 @@ namespace BROINK
                 return;
             }
         
-            wins = Mathf.Min(Settings.active.requiredWins, wins + 1);
+            wins = Mathf.Min(GlobalSettings.active.requiredWins, wins + 1);
         
-            if (wins < Settings.active.requiredWins)
+            if (wins < GlobalSettings.active.requiredWins)
                 return;
         
             if (level == botsCount)

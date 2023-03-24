@@ -28,7 +28,7 @@ namespace BROINK
 
         protected float gameRadius => playingField.radius * 100;
 
-        static float player_acceleration => Settings.active.ballAcceleration;
+        static float player_acceleration => GlobalSettings.active.ballAcceleration;
 
         float seed;
 
@@ -99,7 +99,7 @@ namespace BROINK
                 return;
             }
 
-            opponentTimer = Settings.active.barrierLifetime + 1 + Random.value * 3;
+            opponentTimer = GlobalSettings.active.barrierLifetime + 1 + Random.value * 3;
             this.opponent = choose(opponents.Where(x => !x.ball.hasDropped).ToArray());
         }
 
@@ -140,7 +140,7 @@ namespace BROINK
         protected bool ModeOpening(ref Vector2 output)
         {
             var current = playingField.barrier.currentLifetime;
-            var max = Settings.active.barrierLifetime;
+            var max = GlobalSettings.active.barrierLifetime;
             if (current > max - settings.openingTotalDuration)
             {
                 mode = Mode.Offensive;

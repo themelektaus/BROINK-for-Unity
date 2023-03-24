@@ -4,8 +4,8 @@ namespace BROINK
 {
     public class Ball : MonoBehaviour
     {
-        static float acceleration => Settings.active.ballAcceleration;
-        static float radius => Settings.active.ballRadius;
+        static float acceleration => GlobalSettings.active.ballAcceleration;
+        static float radius => GlobalSettings.active.ballRadius;
 
         public Vector2 input;
         public SpriteRenderer spriteRenderer;
@@ -118,8 +118,8 @@ namespace BROINK
 
         bool CollidesWithBarrier(out float x)
         {
-            var ballRadius = Settings.active.ballRadius;
-            var barrierWidth = Settings.active.barrierWidth;
+            var ballRadius = GlobalSettings.active.ballRadius;
+            var barrierWidth = GlobalSettings.active.barrierWidth;
 
             x = -ballRadius - barrierWidth;
             if (position.x < 0 && position.x > x)
@@ -166,7 +166,7 @@ namespace BROINK
 
             {
                 var clipIndex = force.magnitude * 5;
-                var position = this.position + impactDirection * Settings.active.ballRadius;
+                var position = this.position + impactDirection * GlobalSettings.active.ballRadius;
                 var volume = clipIndex * 2;
                 hitSoundEffect.Play(clipIndex, position, volume);
             }

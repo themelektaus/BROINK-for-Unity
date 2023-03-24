@@ -11,7 +11,7 @@ namespace BROINK
         protected virtual void OnStart() { }
         protected virtual void OnExit() { }
 
-        void Awake()
+        protected virtual void Awake()
         {
             foreach (Transform child in transform)
                 if (!child.GetComponentInChildren<State>())

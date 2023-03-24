@@ -4,8 +4,8 @@ namespace BROINK
 {
     public class PlayingField : MonoBehaviour
     {
-        static float size => Settings.active.playingFieldSize;
-        static float maxLifetime => Settings.active.playingFieldLifetime;
+        static float size => GlobalSettings.active.playingFieldSize;
+        static float maxLifetime => GlobalSettings.active.playingFieldLifetime;
 
         public Barrier barrier;
 
@@ -20,7 +20,7 @@ namespace BROINK
 
         public void ResetTransform()
         {
-            transform.localScale = Vector3.one;
+            transform.localScale = GetBaseScale();
             barrier.ResetTransform();
         }
 
@@ -29,7 +29,12 @@ namespace BROINK
             if (!barrier.enabled)
                 currentLifetime = Mathf.Max(0, currentLifetime - Time.deltaTime);
 
-            transform.localScale = Vector3.one * GetScale();
+            transform.localScale = GetBaseScale() * GetScale();
+        }
+
+        Vector3 GetBaseScale()
+        {
+            return Vector3.one * (size / 10);
         }
 
         float GetScale()

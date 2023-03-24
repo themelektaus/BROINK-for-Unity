@@ -242,7 +242,6 @@ GameObject:
   - component: {fileID: 2142125255797953835}
   - component: {fileID: 7548074182037022404}
   - component: {fileID: 415650478448204898}
-  - component: {fileID: 6113747174614971378}
   m_Layer: 0
   m_Name: Win Text
   m_TagString: Untagged
@@ -327,17 +326,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b22b185734a0c94698767d269749269, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6113747174614971378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9199217497864556441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95c571f9625c07a4ea907453f18139a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

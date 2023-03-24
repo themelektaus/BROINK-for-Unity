@@ -15,7 +15,7 @@ namespace BROINK
 
         public override int GetItemCount()
         {
-            return Settings.active.requiredWins;
+            return GlobalSettings.active.requiredWins;
         }
 
         public override GameObject CreateItem(int index)
